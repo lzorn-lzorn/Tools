@@ -1,3 +1,0 @@
-C:/ProgramUser/code/algorithm/build/CMakeFiles/Moonlight.dir
-C:/ProgramUser/code/algorithm/build/CMakeFiles/edit_cache.dir
-C:/ProgramUser/code/algorithm/build/CMakeFiles/rebuild_cache.dir
