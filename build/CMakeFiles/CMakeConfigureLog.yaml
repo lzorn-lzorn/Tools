@@ -1,0 +1,693 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      The system is: Windows - 10.0.22631 - AMD64
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      The system is: Windows - 10.0.22631 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+      Compiler: C:/ProgramUser/tools/LLVM/bin/clang.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      1104
+      LINK : fatal error LNK1104: 无法打开文件“a.exe”
+      clang: error: unable to remove file: permission denied
+      clang: error: linker command failed with exit code 1104 (use -v to see invocation)
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: C:/ProgramUser/tools/LLVM/bin/clang.exe 
+      Build flags: 
+      Id flags: -c 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+      
+      The C compiler identification is Clang, found in:
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/3.29.0-rc3/CompilerIdC/CMakeCCompilerId.o
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: C:/ProgramUser/tools/w64devkit/bin/cc.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+      
+      The C compiler identification could not be found in:
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/3.29.0-rc3/CompilerIdC/a.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: C:/ProgramUser/tools/w64devkit/bin/cc.exe 
+      Build flags: 
+      Id flags: -c 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+      
+      The C compiler identification is GNU, found in:
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/3.29.0-rc3/CompilerIdC/CMakeCCompilerId.o
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: C:/ProgramUser/tools/LLVM/bin/clang++.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.exe"
+      
+      The CXX compiler identification is Clang, found in:
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/3.29.0-rc3/CompilerIdCXX/a.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Detecting CXX compiler /showIncludes prefix:
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Detecting CXX compiler /showIncludes prefix:
+        
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:64 (try_compile)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-bcdxdi"
+      binary: "C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-bcdxdi"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/ProgramUser/tools/LLVM/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-bcdxdi'
+        
+        Run Build Command(s): C:/ProgramUser/tools/ninja-win/ninja.exe -v cmTC_6e8d7
+        [1/2] C:\\ProgramUser\\tools\\LLVM\\bin\\clang.exe   -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -MD -MT CMakeFiles/cmTC_6e8d7.dir/CMakeCCompilerABI.c.obj -MF CMakeFiles\\cmTC_6e8d7.dir\\CMakeCCompilerABI.c.obj.d -o CMakeFiles/cmTC_6e8d7.dir/CMakeCCompilerABI.c.obj -c C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeCCompilerABI.c
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && C:\\ProgramUser\\tools\\LLVM\\bin\\clang.exe -nostartfiles -nostdlib -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -v  -Xlinker /subsystem:console  -fuse-ld=lld-link CMakeFiles/cmTC_6e8d7.dir/CMakeCCompilerABI.c.obj -o cmTC_6e8d7.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_6e8d7.lib -Xlinker /pdb:cmTC_6e8d7.pdb -Xlinker /version:0.0     && cd ."
+        clang version 18.1.4
+        Target: x86_64-pc-windows-msvc
+        Thread model: posix
+        InstalledDir: C:\\ProgramUser\\tools\\LLVM\\bin
+         "C:\\\\ProgramUser\\\\tools\\\\LLVM\\\\bin\\\\lld-link" -out:cmTC_6e8d7.exe "-libpath:C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\VC\\\\Tools\\\\MSVC\\\\14.42.34433\\\\lib\\\\x64" "-libpath:C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\VC\\\\Tools\\\\MSVC\\\\14.42.34433\\\\atlmfc\\\\lib\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\\\Lib\\\\10.0.26100.0\\\\ucrt\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\\\Lib\\\\10.0.26100.0\\\\um\\\\x64" "-libpath:C:\\\\ProgramUser\\\\tools\\\\LLVM\\\\lib\\\\clang\\\\18\\\\lib\\\\windows" -nologo -debug /subsystem:console CMakeFiles/cmTC_6e8d7.dir/CMakeCCompilerABI.c.obj /MANIFEST:EMBED /implib:cmTC_6e8d7.lib /pdb:cmTC_6e8d7.pdb /version:0.0\x0d
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:170 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'C': C:/ProgramUser/tools/LLVM/bin/lld-link
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Running the C compiler's linker: "C:/ProgramUser/tools/LLVM/bin/lld-link" "-v"
+      lld-link: warning: ignoring unknown argument '-v'
+      lld-link: error: no input files
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Running the C compiler's linker: "C:/ProgramUser/tools/LLVM/bin/lld-link" "-V"
+      lld-link: warning: ignoring unknown argument '-V'
+      lld-link: error: no input files
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Running the C compiler's linker: "C:/ProgramUser/tools/LLVM/bin/lld-link" "--version"
+      LLD 18.1.4
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: C:/ProgramUser/tools/w64devkit/bin/c++.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.exe"
+      
+      The CXX compiler identification could not be found in:
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/3.29.0-rc3/CompilerIdCXX/a.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:64 (try_compile)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-9zlpxq"
+      binary: "C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-9zlpxq"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/ProgramUser/tools/LLVM/bin/clang-scan-deps.exe"
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-9zlpxq'
+        
+        Run Build Command(s): C:/ProgramUser/tools/ninja-win/ninja.exe -v cmTC_b9623
+        [1/2] C:\\ProgramUser\\tools\\LLVM\\bin\\clang++.exe   -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -std=gnu++20 -MD -MT CMakeFiles/cmTC_b9623.dir/CMakeCXXCompilerABI.cpp.obj -MF CMakeFiles\\cmTC_b9623.dir\\CMakeCXXCompilerABI.cpp.obj.d -o CMakeFiles/cmTC_b9623.dir/CMakeCXXCompilerABI.cpp.obj -c C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeCXXCompilerABI.cpp
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && C:\\ProgramUser\\tools\\LLVM\\bin\\clang++.exe -nostartfiles -nostdlib -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -v  -Xlinker /subsystem:console  -fuse-ld=lld-link CMakeFiles/cmTC_b9623.dir/CMakeCXXCompilerABI.cpp.obj -o cmTC_b9623.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_b9623.lib -Xlinker /pdb:cmTC_b9623.pdb -Xlinker /version:0.0     && cd ."
+        clang version 18.1.4
+        Target: x86_64-pc-windows-msvc
+        Thread model: posix
+        InstalledDir: C:\\ProgramUser\\tools\\LLVM\\bin
+         "C:\\\\ProgramUser\\\\tools\\\\LLVM\\\\bin\\\\lld-link" -out:cmTC_b9623.exe "-libpath:C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\VC\\\\Tools\\\\MSVC\\\\14.42.34433\\\\lib\\\\x64" "-libpath:C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\VC\\\\Tools\\\\MSVC\\\\14.42.34433\\\\atlmfc\\\\lib\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\\\Lib\\\\10.0.26100.0\\\\ucrt\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\\\Lib\\\\10.0.26100.0\\\\um\\\\x64" "-libpath:C:\\\\ProgramUser\\\\tools\\\\LLVM\\\\lib\\\\clang\\\\18\\\\lib\\\\windows" -nologo -debug /subsystem:console CMakeFiles/cmTC_b9623.dir/CMakeCXXCompilerABI.cpp.obj /MANIFEST:EMBED /implib:cmTC_b9623.lib /pdb:cmTC_b9623.pdb /version:0.0\x0d
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:170 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'CXX': C:/ProgramUser/tools/LLVM/bin/lld-link
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/ProgramUser/tools/LLVM/bin/lld-link" "-v"
+      lld-link: warning: ignoring unknown argument '-v'
+      lld-link: error: no input files
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/ProgramUser/tools/LLVM/bin/lld-link" "-V"
+      lld-link: warning: ignoring unknown argument '-V'
+      lld-link: error: no input files
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Running the CXX compiler's linker: "C:/ProgramUser/tools/LLVM/bin/lld-link" "--version"
+      LLD 18.1.4
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: C:/ProgramUser/tools/w64devkit/bin/c++.exe 
+      Build flags: 
+      Id flags: -c 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.o"
+      
+      The CXX compiler identification is GNU, found in:
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/3.29.0-rc3/CompilerIdCXX/CMakeCXXCompilerId.o
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/FeatureTesting.cmake:34 (try_compile)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/FeatureTesting.cmake:84 (_record_compiler_features)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Compiler/CMakeCommonCompilerMacros.cmake:121 (_record_compiler_features_cxx)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompileFeatures.cmake:70 (cmake_record_cxx_compile_features)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:70 (CMAKE_DETERMINE_COMPILE_FEATURES)"
+      - "CMakeLists.txt:7 (project)"
+    checks:
+      - "Detecting CXX compile features"
+    directories:
+      source: "C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-x1197t"
+      binary: "C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-x1197t"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/ProgramUser/tools/LLVM/bin/clang-scan-deps.exe"
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_FEATURE_TEST"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-x1197t'
+        
+        Run Build Command(s): C:/ProgramUser/tools/ninja-win/ninja.exe -v cmTC_f669e
+        [1/2] C:\\ProgramUser\\tools\\LLVM\\bin\\clang++.exe   -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -std=gnu++20   -std=c++14 -MD -MT CMakeFiles/cmTC_f669e.dir/feature_tests.cxx.obj -MF CMakeFiles\\cmTC_f669e.dir\\feature_tests.cxx.obj.d -o CMakeFiles/cmTC_f669e.dir/feature_tests.cxx.obj -c C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-x1197t/feature_tests.cxx
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && C:\\ProgramUser\\tools\\LLVM\\bin\\clang++.exe -nostartfiles -nostdlib -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -Xlinker /subsystem:console  -fuse-ld=lld-link CMakeFiles/cmTC_f669e.dir/feature_tests.cxx.obj -o cmTC_f669e.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_f669e.lib -Xlinker /pdb:cmTC_f669e.pdb -Xlinker /version:0.0   -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 -loldnames  && cd ."
+        
+      exitCode: 0
+...
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/FeatureTesting.cmake:34 (try_compile)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/FeatureTesting.cmake:84 (_record_compiler_features)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Compiler/CMakeCommonCompilerMacros.cmake:129 (_record_compiler_features_cxx)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompileFeatures.cmake:70 (cmake_record_cxx_compile_features)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCXXCompiler.cmake:70 (CMAKE_DETERMINE_COMPILE_FEATURES)"
+      - "CMakeLists.txt:7 (project)"
+    checks:
+      - "Detecting CXX compile features"
+    directories:
+      source: "C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8"
+      binary: "C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/ProgramUser/tools/LLVM/bin/clang-scan-deps.exe"
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_FEATURE_TEST"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8'
+        
+        Run Build Command(s): C:/ProgramUser/tools/ninja-win/ninja.exe -v cmTC_c3819
+        [1/2] C:\\ProgramUser\\tools\\w64devkit\\bin\\c++.exe   -std=gnu++20   -std=c++14 -o CMakeFiles/cmTC_c3819.dir/feature_tests.cxx.obj -c C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx
+        FAILED: CMakeFiles/cmTC_c3819.dir/feature_tests.cxx.obj 
+        C:\\ProgramUser\\tools\\w64devkit\\bin\\c++.exe   -std=gnu++20   -std=c++14 -o CMakeFiles/cmTC_c3819.dir/feature_tests.cxx.obj -c C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:11:72: error: missing binary operator before token "("
+           11 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_alias_templates)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:18:72: error: missing binary operator before token "("
+           18 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_alignas)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:25:72: error: missing binary operator before token "("
+           25 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_alignas)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:32:72: error: missing binary operator before token "("
+           32 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_attributes)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:39:72: error: missing binary operator before token "("
+           39 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_auto_type)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:46:72: error: missing binary operator before token "("
+           46 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_constexpr)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:53:72: error: missing binary operator before token "("
+           53 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_decltype)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:60:72: error: missing binary operator before token "("
+           60 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_default_function_template_args)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:67:72: error: missing binary operator before token "("
+           67 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_defaulted_functions)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:74:72: error: missing binary operator before token "("
+           74 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_defaulted_functions)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:81:72: error: missing binary operator before token "("
+           81 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_delegating_constructors)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:88:72: error: missing binary operator before token "("
+           88 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_deleted_functions)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:102:72: error: missing binary operator before token "("
+          102 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_explicit_conversions)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:123:72: error: missing binary operator before token "("
+          123 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_override_control)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:137:72: error: missing binary operator before token "("
+          137 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_generalized_initializers)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:144:72: error: missing binary operator before token "("
+          144 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_inheriting_constructors)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:158:72: error: missing binary operator before token "("
+          158 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_lambdas)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:165:72: error: missing binary operator before token "("
+          165 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_local_type_template_args)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:179:72: error: missing binary operator before token "("
+          179 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_noexcept)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:186:72: error: missing binary operator before token "("
+          186 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_nonstatic_member_init)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:193:72: error: missing binary operator before token "("
+          193 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_nullptr)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:200:72: error: missing binary operator before token "("
+          200 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_override_control)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:207:72: error: missing binary operator before token "("
+          207 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_range_for)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:214:72: error: missing binary operator before token "("
+          214 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_raw_string_literals)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:221:72: error: missing binary operator before token "("
+          221 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_reference_qualified_functions)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:235:72: error: missing binary operator before token "("
+          235 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_rvalue_references)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:249:72: error: missing binary operator before token "("
+          249 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_static_assert)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:256:72: error: missing binary operator before token "("
+          256 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_strong_enums)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:263:72: error: missing binary operator before token "("
+          263 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_thread_local)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:270:72: error: missing binary operator before token "("
+          270 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_trailing_return)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:277:72: error: missing binary operator before token "("
+          277 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_unicode_literals)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:284:72: error: missing binary operator before token "("
+          284 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_generalized_initializers)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:291:72: error: missing binary operator before token "("
+          291 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_unrestricted_unions)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:298:72: error: missing binary operator before token "("
+          298 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_user_literals)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:312:72: error: missing binary operator before token "("
+          312 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_variadic_templates)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:319:72: error: missing binary operator before token "("
+          319 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_aggregate_nsdmi)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:333:72: error: missing binary operator before token "("
+          333 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_binary_literals)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:340:72: error: missing binary operator before token "("
+          340 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_contextual_conversions)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:368:72: error: missing binary operator before token "("
+          368 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_init_captures)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:375:72: error: missing binary operator before token "("
+          375 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_relaxed_constexpr)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:382:72: error: missing binary operator before token "("
+          382 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_return_type_deduction)
+              |                                                                        ^
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-z3fkl8/feature_tests.cxx:389:72: error: missing binary operator before token "("
+          389 | #if ((__clang_major__ * 100) + __clang_minor__) >= 301 && __has_feature(cxx_variable_templates)
+              |                                                                        ^
+        ninja: build stopped: subcommand failed.
+        
+      exitCode: 1
+...
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: C:/ProgramUser/tools/LLVM/bin/clang.exe 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.exe"
+      
+      The C compiler identification is Clang, found in:
+        C:/ProgramUser/code/algorithm/build/CMakeFiles/3.29.0-rc3/CompilerIdC/a.exe
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:1216 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerId.cmake:250 (CMAKE_DETERMINE_MSVC_SHOWINCLUDES_PREFIX)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Detecting C compiler /showIncludes prefix:
+        
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:64 (try_compile)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-tdwohq"
+      binary: "C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-tdwohq"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "C:/ProgramUser/tools/LLVM/bin/clang-scan-deps.exe"
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/ProgramUser/code/algorithm/build/CMakeFiles/CMakeScratch/TryCompile-tdwohq'
+        
+        Run Build Command(s): C:/ProgramUser/tools/ninja-win/ninja.exe -v cmTC_c6641
+        [1/2] C:\\ProgramUser\\tools\\LLVM\\bin\\clang.exe   -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -MD -MT CMakeFiles/cmTC_c6641.dir/CMakeCCompilerABI.c.obj -MF CMakeFiles\\cmTC_c6641.dir\\CMakeCCompilerABI.c.obj.d -o CMakeFiles/cmTC_c6641.dir/CMakeCCompilerABI.c.obj -c C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeCCompilerABI.c
+        [2/2] C:\\Windows\\system32\\cmd.exe /C "cd . && C:\\ProgramUser\\tools\\LLVM\\bin\\clang.exe -nostartfiles -nostdlib -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -v  -Xlinker /subsystem:console  -fuse-ld=lld-link CMakeFiles/cmTC_c6641.dir/CMakeCCompilerABI.c.obj -o cmTC_c6641.exe -Xlinker /MANIFEST:EMBED -Xlinker /implib:cmTC_c6641.lib -Xlinker /pdb:cmTC_c6641.pdb -Xlinker /version:0.0     && cd ."
+        clang version 18.1.4
+        Target: x86_64-pc-windows-msvc
+        Thread model: posix
+        InstalledDir: C:\\ProgramUser\\tools\\LLVM\\bin
+         "C:\\\\ProgramUser\\\\tools\\\\LLVM\\\\bin\\\\lld-link" -out:cmTC_c6641.exe "-libpath:C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\VC\\\\Tools\\\\MSVC\\\\14.42.34433\\\\lib\\\\x64" "-libpath:C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\VC\\\\Tools\\\\MSVC\\\\14.42.34433\\\\atlmfc\\\\lib\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\\\Lib\\\\10.0.26100.0\\\\ucrt\\\\x64" "-libpath:C:\\\\Program Files (x86)\\\\Windows Kits\\\\10\\\\Lib\\\\10.0.26100.0\\\\um\\\\x64" "-libpath:C:\\\\ProgramUser\\\\tools\\\\LLVM\\\\lib\\\\clang\\\\18\\\\lib\\\\windows" -nologo -debug /subsystem:console CMakeFiles/cmTC_c6641.dir/CMakeCCompilerABI.c.obj /MANIFEST:EMBED /implib:cmTC_c6641.lib /pdb:cmTC_c6641.pdb /version:0.0\x0d
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:170 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'C': C:/ProgramUser/tools/LLVM/bin/lld-link
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Running the C compiler's linker: "C:/ProgramUser/tools/LLVM/bin/lld-link" "-v"
+      lld-link: warning: ignoring unknown argument '-v'
+      lld-link: error: no input files
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Running the C compiler's linker: "C:/ProgramUser/tools/LLVM/bin/lld-link" "-V"
+      lld-link: warning: ignoring unknown argument '-V'
+      lld-link: error: no input files
+  -
+    kind: "message-v1"
+    backtrace:
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeDetermineCompilerABI.cmake:207 (cmake_determine_linker_id)"
+      - "C:/ProgramUser/tools/cmake/share/cmake-3.29/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:7 (project)"
+    message: |
+      Running the C compiler's linker: "C:/ProgramUser/tools/LLVM/bin/lld-link" "--version"
+      LLD 18.1.4
+...

@@ -1,0 +1,8 @@
+[
+{
+  "directory": "C:/ProgramUser/code/algorithm/build",
+  "command": "C:\\ProgramUser\\tools\\LLVM\\bin\\clang++.exe -IC:/ProgramUser/code/algorithm/include -O0 -g -Xclang -gcodeview -D_DEBUG -D_DLL -D_MT -Xclang --dependent-lib=msvcrtd -std=gnu++20 -o CMakeFiles\\Moonlight.dir\\src\\main.cpp.obj -c C:\\ProgramUser\\code\\algorithm\\src\\main.cpp",
+  "file": "C:\\ProgramUser\\code\\algorithm\\src\\main.cpp",
+  "output": "CMakeFiles\\Moonlight.dir\\src\\main.cpp.obj"
+}
+]
