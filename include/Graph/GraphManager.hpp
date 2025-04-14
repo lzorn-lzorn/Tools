@@ -98,7 +98,7 @@ private:
     };
     using Allocator = typename GraphAllocInfo::Allocator;
 public:
-    GraphManager<VerTy, WeightType>& Instance() {
+    static GraphManager<VerTy, WeightType>& Instance() {
         static GraphManager<VerTy, WeightType> _m_instance;
         return _m_instance;
     }
