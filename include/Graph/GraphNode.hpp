@@ -13,10 +13,12 @@ template <typename VerTy=int, typename Weight=double>
 struct AdjacencyList{
     AdjacencyList() = default;
     // * 边的集合初始化
-    AdjacencyList(std::unordered_map<std::pair<const uint64_t, const uint64_t>, Weight> list) {
+    explicit AdjacencyList(std::unordered_map<std::pair<const uint64_t, const uint64_t>, Weight> list) {
 
     }
-
+    void Destory(){
+        _m_list.clear();
+    }
 public:
     template <typename WeightType=Weight>
     AdjacencyList& SetEdge(const uint64_t from, const uint64_t to, WeightType weight){
@@ -51,7 +53,12 @@ private:
 
 template <typename VerTy=int, typename Weight=double>
 struct AdjacencyMatrix{
+    AdjacencyMatrix() = default;
+    AdjacencyMatrix(const uint64_t number, std::unordered_map<std::pair<const uint64_t, const uint64_t>, Weight> edges){}
 
+    void Destory(){
+        _m_matrix.clear();
+    }
 private:
     std::vector<Weight> _m_matrix;
 };
