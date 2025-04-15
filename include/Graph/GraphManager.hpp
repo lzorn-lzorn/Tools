@@ -20,6 +20,30 @@ template <typename VerTy = int, typename WeightType = double>
 class GraphInstance{
 public:
     GraphInstance() = default;
+
+    GraphInstance(GraphInstance<VerTy, WeightType>&& other){
+        if (*this == other){
+            return;
+        }
+        id = other.id;
+        start_id = other.start_id;
+        _m_list = std::move(other._m_list);
+        _m_matrix = std::move(other._m_matrix);
+        _m_edges = std::move(other._m_edges);
+        _m_vertexs = std::move(other._m_edges);
+    }
+    GraphInstance& operator=(GraphInstance<VerTy, WeightType>&& other){
+        if (*this == other){
+            return;
+        }
+        id = other.id;
+        start_id = other.start_id;
+        _m_list = std::move(other._m_list);
+        _m_matrix = std::move(other._m_matrix);
+        _m_edges = std::move(other._m_edges);
+        _m_vertexs = std::move(other._m_edges);
+        return *this;
+    }
     void Destory(){
         if (_m_list){
             _m_list->Destory();
@@ -37,7 +61,18 @@ public:
         _m_vertexs.push_back(val);
         return *this;
     }
+    GraphInstance& AddNVertex(const uint64_t n, VerTy val=VerTy()){
+        for (uint64_t i=0; i<n; ++i){
+            _m_vertexs.push_back(val);
+        }
+        return *this;
+    }
 
+    template <typename ...Args>
+    GraphInstance& AddNVertex(Args... args){
+        (_m_vertexs.pop_back(args), ...);
+        return *this;
+    }
     GraphInstance& UpdateVertex(const uint64_t id, VerTy val){
         _m_vertexs[id] = val;
     }
@@ -92,7 +127,7 @@ private:
         using Allocator = std::allocator<GraphInstance<VerTy, WeightType>>;
         std::unique_ptr<
             GraphInstance<VerTy, WeightType>,
-            std::function<void(GraphInstance<VerTy, WeightType>*)>
+            std::function<void(GraphInstance<VerTy, WeightType>*)> // 自定义内存删除器
         > _ptr;
         bool flag = false; // * 该内存是否初始化
     };
@@ -105,7 +140,7 @@ public:
     GraphManager(const GraphManager&) = delete;
     GraphManager& operator=(const GraphManager&) = delete;
 
-    GraphInstance<VerTy,  WeightType>& CreateGraph() {
+    GraphInstance<VerTy,  WeightType>& GetAEmptyGraph() {
         std::lock_guard<std::mutex> lock(_mutex);
 
         // 查找第一个可用的内存块
@@ -119,10 +154,16 @@ public:
                 try {
                     auto* ptr = allocator.allocate(1);
                     std::construct_at(ptr);
-                    info._ptr.reset(ptr, [allocator](auto* p) {
-                        std::destroy_at(allocator, p);
-                        allocator.deallocate(p, 1);
-                    });
+                    info._ptr = std::unique_ptr<
+                            GraphInstance<VerTy, WeightType>,
+                            std::function<void(GraphInstance<VerTy, WeightType>*)>
+                    >(
+                        ptr,
+                        [allocator](GraphInstance<VerTy, WeightType>* p) {
+                            std::destroy_at(p);         // 先析构对象
+                            allocator.deallocate(p, 1); // 再释放内存
+                        }
+                    );
                 } catch (const std::bad_alloc& e) {
                     std::cerr << "Allocation failed: " << e.what() << std::endl;
                     throw;
@@ -142,10 +183,16 @@ public:
                 auto* ptr = allocator.allocate(1);
                 std::construct_at(ptr);
                 GraphAllocInfo new_info;
-                new_info._ptr.reset(ptr, [allocator](auto* p) {
-                    std::destroy_at(p);
-                    allocator.deallocate(p, 1);
-                });
+                new_info._ptr = std::unique_ptr<
+                            GraphInstance<VerTy, WeightType>,
+                            std::function<void(GraphInstance<VerTy, WeightType>*)>
+                >(
+                    ptr,
+                    [allocator](GraphInstance<VerTy, WeightType>* p) {
+                        std::destroy_at(p);         // 先析构对象
+                        allocator.deallocate(p, 1); // 再释放内存
+                    }
+                );
                 new_info.flag = true;
                 new_allocs.push_back(std::move(new_info));
             }
@@ -166,7 +213,7 @@ public:
         }
         return *_m_graphs[_m_graphs.size() - 2]._ptr; // 返回第一个新分配的元素
     }
-    void DestoryGraph(const uint64_t id){
+    void DestoryAGraph(const uint64_t id){
         std::lock_guard<std::mutex> lock(_mutex);
         if (id >= _m_graphs.size()) return;
 
@@ -178,6 +225,9 @@ public:
     }
 
     void Destory(){
+        if (!this->_b_state){
+            return ;
+        }
         std::lock_guard<std::mutex> lock(_mutex);
         for (auto& info : _m_graphs) {
             if (info._ptr) {
@@ -221,10 +271,14 @@ private:
                 std::cerr << "Initial allocation failed: " << e.what() << std::endl;
             }
         }
+        this->_b_state = false;
     }
-    ~GraphManager() = default;
+    ~GraphManager(){
+        this->Destory();
+    }
 private:
     std::vector<GraphAllocInfo> _m_graphs;
+    bool _b_state{false}; // 是否被释放
     mutable std::mutex _mutex;
 };
 
