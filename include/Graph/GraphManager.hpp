@@ -159,7 +159,7 @@ public:
                             std::function<void(GraphInstance<VerTy, WeightType>*)>
                     >(
                         ptr,
-                        [allocator](GraphInstance<VerTy, WeightType>* p) {
+                        [allocator](GraphInstance<VerTy, WeightType>* p) mutable {
                             std::destroy_at(p);         // 先析构对象
                             allocator.deallocate(p, 1); // 再释放内存
                         }
@@ -188,7 +188,7 @@ public:
                             std::function<void(GraphInstance<VerTy, WeightType>*)>
                 >(
                     ptr,
-                    [allocator](GraphInstance<VerTy, WeightType>* p) {
+                    [allocator](GraphInstance<VerTy, WeightType>* p) mutable {
                         std::destroy_at(p);         // 先析构对象
                         allocator.deallocate(p, 1); // 再释放内存
                     }
@@ -261,10 +261,16 @@ private:
                 auto* ptr = allocator.allocate(1);
                 std::construct_at(ptr);
                 GraphAllocInfo info;
-                info._ptr.reset(ptr, [allocator](auto* p) {
-                    std::destroy_at(allocator, p);
-                    allocator.deallocate(p, 1);
-                });
+                info._ptr = std::unique_ptr<
+                            GraphInstance<VerTy, WeightType>,
+                            std::function<void(GraphInstance<VerTy, WeightType>*)>
+                >(
+                    ptr,
+                    [allocator](GraphInstance<VerTy, WeightType>* p) mutable {
+                        std::destroy_at(p);         // 先析构对象
+                        allocator.deallocate(p, 1); // 再释放内存
+                    }
+                );
                 info.flag = false;
                 _m_graphs.push_back(std::move(info));
             } catch (const std::bad_alloc& e) {
