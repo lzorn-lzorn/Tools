@@ -77,7 +77,7 @@ public:
         _m_vertexs[id] = val;
     }
 
-    GraphInstance& AddEdge(const uint64_t from_id, const uint64_t to_id, WeightType weight=WeightType(1)){
+    GraphInstance& AddEdge(const uint64_t from_id, uint64_t to_id, WeightType weight=WeightType(1)){
         // * 检查点 from_id, to_id 是否存在, 不存在则初始化
         uint64_t _id = std::max(from_id, to_id);
         if (_m_vertexs.size() < _id){
@@ -87,14 +87,17 @@ public:
             _m_vertexs[from_id] ?
                 (_m_vertexs[to_id] ?  : _m_vertexs[to_id]=VerTy()) : _m_vertexs[from_id]=VerTy();
         }
-        _m_edges.try_emplace({from_id, to_id}, weight);
+
+        _m_edges.insert({.from=from_id, .to=to_id, .weight=weight});
         return *this;
     }
-    GraphInstance& UpdateEdge(const std::pair<uint64_t, uint64_t> idx, WeightType weight=WeightType(1)){
-        return _m_edges[idx] = weight, *this;
-    }
-    GraphInstance& UpdateEdge(const uint64_t from_id, const uint64_t to_id, WeightType weight=WeightType(1)){
-        return _m_edges[{from_id, to_id}] = weight, *this;
+
+    GraphInstance& UpdateEdge(uint64_t from_id, uint64_t to_id, WeightType weight=WeightType(1)){
+        auto it = _m_edges.find({.from=from_id, .to=to_id});
+        if (it != _m_edges.end()){
+            (*it).weight = weight;
+        }
+        return *this;
     }
     AdjacencyList<VerTy, WeightType>& List() const {
         if (!_m_list){
@@ -116,7 +119,11 @@ private:
     std::unique_ptr<AdjacencyMatrix<VerTy, WeightType>> _m_matrix {nullptr};
 
     std::vector<std::optional<VerTy>> _m_vertexs;
-    std::unordered_map<std::pair<const uint64_t, const uint64_t>, WeightType> _m_edges;
+    std::unordered_set<
+                        Edge<WeightType>,
+                        typename Edge<WeightType>::EdgeHash,
+                        typename Edge<WeightType>::EdgeEqual
+                      > _m_edges;
 };
 
 
@@ -155,15 +162,15 @@ public:
                     auto* ptr = allocator.allocate(1);
                     std::construct_at(ptr);
                     info._ptr = std::unique_ptr<
-                            GraphInstance<VerTy, WeightType>,
-                            std::function<void(GraphInstance<VerTy, WeightType>*)>
-                    >(
-                        ptr,
-                        [allocator](GraphInstance<VerTy, WeightType>* p) mutable {
-                            std::destroy_at(p);         // 先析构对象
-                            allocator.deallocate(p, 1); // 再释放内存
-                        }
-                    );
+                                    GraphInstance<VerTy, WeightType>,
+                                    std::function<void(GraphInstance<VerTy, WeightType>*)>
+                                >(
+                                    ptr,
+                                    [allocator](GraphInstance<VerTy, WeightType>* p) mutable {
+                                        std::destroy_at(p);         // 先析构对象
+                                        allocator.deallocate(p, 1); // 再释放内存
+                                    }
+                                );
                 } catch (const std::bad_alloc& e) {
                     std::cerr << "Allocation failed: " << e.what() << std::endl;
                     throw;
@@ -184,15 +191,15 @@ public:
                 std::construct_at(ptr);
                 GraphAllocInfo new_info;
                 new_info._ptr = std::unique_ptr<
-                            GraphInstance<VerTy, WeightType>,
-                            std::function<void(GraphInstance<VerTy, WeightType>*)>
-                >(
-                    ptr,
-                    [allocator](GraphInstance<VerTy, WeightType>* p) mutable {
-                        std::destroy_at(p);         // 先析构对象
-                        allocator.deallocate(p, 1); // 再释放内存
-                    }
-                );
+                                    GraphInstance<VerTy, WeightType>,
+                                    std::function<void(GraphInstance<VerTy, WeightType>*)>
+                                >(
+                                    ptr,
+                                    [allocator](GraphInstance<VerTy, WeightType>* p) mutable {
+                                        std::destroy_at(p);         // 先析构对象
+                                        allocator.deallocate(p, 1); // 再释放内存
+                                    }
+                                );
                 new_info.flag = true;
                 new_allocs.push_back(std::move(new_info));
             }
@@ -262,15 +269,15 @@ private:
                 std::construct_at(ptr);
                 GraphAllocInfo info;
                 info._ptr = std::unique_ptr<
-                            GraphInstance<VerTy, WeightType>,
-                            std::function<void(GraphInstance<VerTy, WeightType>*)>
-                >(
-                    ptr,
-                    [allocator](GraphInstance<VerTy, WeightType>* p) mutable {
-                        std::destroy_at(p);         // 先析构对象
-                        allocator.deallocate(p, 1); // 再释放内存
-                    }
-                );
+                                GraphInstance<VerTy, WeightType>,
+                                std::function<void(GraphInstance<VerTy, WeightType>*)>
+                            >(
+                                ptr,
+                                [allocator](GraphInstance<VerTy, WeightType>* p) mutable {
+                                    std::destroy_at(p);         // 先析构对象
+                                    allocator.deallocate(p, 1); // 再释放内存
+                                }
+                            );
                 info.flag = false;
                 _m_graphs.push_back(std::move(info));
             } catch (const std::bad_alloc& e) {
