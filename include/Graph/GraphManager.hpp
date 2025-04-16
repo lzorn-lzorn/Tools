@@ -20,7 +20,9 @@ template <typename VerTy = int, typename WeightType = double>
 class GraphInstance{
 public:
     GraphInstance() = default;
-
+    ~GraphInstance() {
+        Destory();
+    }
     GraphInstance(GraphInstance<VerTy, WeightType>&& other){
         if (*this == other){
             return;
@@ -44,18 +46,7 @@ public:
         _m_vertexs = std::move(other._m_edges);
         return *this;
     }
-    void Destory(){
-        if (_m_list){
-            _m_list->Destory();
-            _m_list = nullptr;
-        }
-        if (_m_matrix){
-            _m_matrix->Destory();
-            _m_matrix = nullptr;
-        }
-        _m_vertexs.clear();
-        _m_edges.clear();
-    }
+
 public:
     GraphInstance& AddVertex(VerTy val=VerTy()){
         _m_vertexs.push_back(val);
@@ -124,6 +115,23 @@ private:
                         typename Edge<WeightType>::EdgeHash,
                         typename Edge<WeightType>::EdgeEqual
                       > _m_edges;
+private:
+    void Destory(){
+#ifdef __PRINT_DEBUG_INFO__
+        std::cout << "GraphInstance: Destory() Call!\n";
+        std::cout << "GraphInstance's id is " << this->id;
+#endif
+        if (_m_list){
+            _m_list->Destory();
+            _m_list = nullptr;
+        }
+        if (_m_matrix){
+            _m_matrix->Destory();
+            _m_matrix = nullptr;
+        }
+        _m_vertexs.clear();
+        _m_edges.clear();
+    }
 };
 
 
@@ -231,19 +239,7 @@ public:
         info.flag = false;
     }
 
-    void Destory(){
-        if (!this->_b_state){
-            return ;
-        }
-        std::lock_guard<std::mutex> lock(_mutex);
-        for (auto& info : _m_graphs) {
-            if (info._ptr) {
-                std::destroy_at(info._ptr.get());
-                info._ptr.reset();
-            }
-        }
-        _m_graphs.clear();
-    }
+
 
     GraphInstance<VerTy,  WeightType>& GetGraph(const uint64_t id) {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -284,15 +280,27 @@ private:
                 std::cerr << "Initial allocation failed: " << e.what() << std::endl;
             }
         }
-        this->_b_state = false;
     }
     ~GraphManager(){
         this->Destory();
     }
 private:
     std::vector<GraphAllocInfo> _m_graphs;
-    bool _b_state{false}; // 是否被释放
     mutable std::mutex _mutex;
+private:
+    void Destory(){
+#ifdef __PRINT_DEBUG_INFO__
+        std::cout << "GraphManager: Destory() Call!\n";
+#endif
+        std::lock_guard<std::mutex> lock(_mutex);
+        for (auto& info : _m_graphs) {
+            if (info._ptr) {
+                std::destroy_at(info._ptr.get());
+                info._ptr.reset();
+            }
+        }
+        _m_graphs.clear();
+    }
 };
 
 }
