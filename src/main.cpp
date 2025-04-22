@@ -16,9 +16,10 @@ void TestGraphManager(){
 
 int main(int argc, char **argv){
     // TestGraphManager();
-    while(argc > 0){
-        printf("%s\n", shift(argv, argc));
-    }
-    shift(argv, argc);
+    // while(argc > 0){
+    //     printf("%s\n", shift(argv, argc));
+    // }
+    // shift(argv, argc);
+
     return 0;
 }
