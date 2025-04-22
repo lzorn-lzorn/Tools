@@ -6,9 +6,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 project(Moonlight)
 
-file(GLOB_RECURSE sources PUBLIC 
+file(GLOB_RECURSE sources PUBLIC
     src/*.cpp
-    src/*.c 
+    src/*.c
 )
 
 add_executable(${PROJECT_NAME} ${sources})
