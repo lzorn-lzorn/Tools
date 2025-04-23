@@ -39,16 +39,8 @@ static std::string GetMaxSubPalindrome(const std::string str){
 // @param: str 处理字符串
 // @param: c   用于分割的字符
 // @param: count 分割的次数, 默认为-1即为全部分割
-// @return: 返回一个新的字符串
-static std::string Spilt(const std::string& str, const char c, const size_t count=-1);
-
-// @function: 将str中按照c字符进行分割, 直接在原字符串上进行分割
-// @param: str 处理字符串
-// @param: c   用于分割的字符
-// @param: count 分割的次数, 默认为-1即为全部分割
-// @return: void
-static void Spilt(std::string& str, const char c, const size_t count=-1);
-
+// @return: 字符串的数组
+static std::vector<std::string> Split(const std::string& str, const char c, const size_t count=-1);
 
 // @function: 在str中使用 src_str 替换 dst_str, 此替换不超过count次, 默认-1全部替换, 返回一个新字符串
 static std::string Replace(const std::string& str, const std::string src_str, const std::string dst_str, const size_t count);
