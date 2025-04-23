@@ -40,10 +40,26 @@ static std::string GetMaxSubPalindrome(const std::string str){
 // @param: c   用于分割的字符
 // @param: count 分割的次数, 默认为-1即为全部分割
 // @return: 字符串的数组
-static std::vector<std::string> Split(const std::string& str, const char c, const size_t count=-1);
+static std::vector<std::string> Split(const std::string& str, const char c, const int32_t count=-1){
+    std::string::size_type _begin_pos = 0, _end_pos = str.find(c);
+    size_t _max_split = (count == -1) ? str.size() : static_cast<size_t>(count);
+    // size_t _max_split = static_cast<size_t>(count);
+    std::vector <std::string> res;
+
+    while(_end_pos != std::string::npos && _max_split > 0){
+        res.push_back(str.substr(_begin_pos, _end_pos-_begin_pos));
+        _begin_pos = _end_pos + 1;
+        _end_pos = str.find(c, _begin_pos);
+        _max_split--;
+    }
+    if (_begin_pos <= str.size()){
+        res.push_back(str.substr(_begin_pos));
+    }
+    return res;
+}
 
 // @function: 在str中使用 src_str 替换 dst_str, 此替换不超过count次, 默认-1全部替换, 返回一个新字符串
 static std::string Replace(const std::string& str, const std::string src_str, const std::string dst_str, const size_t count);
 
 // @function: 在str中使用 src_str 替换 dst_str, 此替换不超过count次, 默认-1全部替换, 直接在原字符串上操作
-static std::string Replace(std::string& str, const std::string src_str, const std::string dst_str);
+static void Replace(std::string& str, const std::string src_str, const std::string dst_str);

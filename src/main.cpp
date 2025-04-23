@@ -23,8 +23,13 @@ int main(int argc, char **argv){
     //     printf("%s\n", shift(argv, argc));
     // }
     // shift(argv, argc);
-    std::cout << _fill_string_with_char("aabb") << std::endl;
-    std::cout << GetMaxSubPalindrome("aabbaa") << std::endl;
-    std::cout << GetMaxSubPalindrome("aabbaaaaaaaaaaa") << std::endl;
+    // std::cout << _fill_string_with_char("aabb") << std::endl;
+    // std::cout << GetMaxSubPalindrome("aabbaa") << std::endl;
+    // std::cout << GetMaxSubPalindrome("aabbaaaaaaaaaaa") << std::endl;
+
+    auto arr =  Split("hello world, im lizhuoran", ' ');
+    for (const auto& a:arr){
+        std::cout << a << std::endl;
+    }
     return 0;
 }
