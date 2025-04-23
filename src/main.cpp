@@ -23,7 +23,8 @@ int main(int argc, char **argv){
     //     printf("%s\n", shift(argv, argc));
     // }
     // shift(argv, argc);
-    std::cout << IsPalindrome("aabb") << std::endl;
-    std::cout << IsPalindrome("aabbaa") << std::endl;
+    std::cout << _fill_string_with_char("aabb") << std::endl;
+    std::cout << GetMaxSubPalindrome("aabbaa") << std::endl;
+    std::cout << GetMaxSubPalindrome("aabbaaaaaaaaaaa") << std::endl;
     return 0;
 }
