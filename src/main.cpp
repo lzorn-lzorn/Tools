@@ -27,9 +27,14 @@ int main(int argc, char **argv){
     // std::cout << GetMaxSubPalindrome("aabbaa") << std::endl;
     // std::cout << GetMaxSubPalindrome("aabbaaaaaaaaaaa") << std::endl;
 
-    auto arr =  Split("hello world, im lizhuoran", ' ');
+    auto arr =  Split("hello world, im  lizhuoran", "  ");
+    std::cout << "Split: " << std::endl;
     for (const auto& a:arr){
-        std::cout << a << std::endl;
+        std::cout << a << "    ";
     }
+    std::cout << std::endl;
+    std::cout << "Replace: " << std::endl;
+    std::cout << Replace("hello world, im lizhuoran", "__", " ") << std::endl;
+    // hello__world,__im__lizhuoran
     return 0;
 }

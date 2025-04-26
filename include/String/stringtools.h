@@ -40,16 +40,16 @@ static std::string GetMaxSubPalindrome(const std::string str){
 // @param: c   用于分割的字符
 // @param: count 分割的次数, 默认为-1即为全部分割
 // @return: 字符串的数组
-static std::vector<std::string> Split(const std::string& str, const char c, const int32_t count=-1){
-    std::string::size_type _begin_pos = 0, _end_pos = str.find(c);
+static std::vector<std::string> Split(const std::string& str, const std::string _s, const int32_t count=-1){
+    std::string::size_type _begin_pos = 0, _end_pos = str.find(_s);
     size_t _max_split = (count == -1) ? str.size() : static_cast<size_t>(count);
     // size_t _max_split = static_cast<size_t>(count);
     std::vector <std::string> res;
 
     while(_end_pos != std::string::npos && _max_split > 0){
         res.push_back(str.substr(_begin_pos, _end_pos-_begin_pos));
-        _begin_pos = _end_pos + 1;
-        _end_pos = str.find(c, _begin_pos);
+        _begin_pos = _end_pos + _s.size();
+        _end_pos = str.find(_s, _begin_pos);
         _max_split--;
     }
     if (_begin_pos <= str.size()){
@@ -58,8 +58,43 @@ static std::vector<std::string> Split(const std::string& str, const char c, cons
     return res;
 }
 
+// @function: 同上
+static std::vector<std::string> Split(const std::string& str, const char c, const int32_t count=-1){
+    std::string _tmp_str = std::string(1, c);
+    return Split(str, _tmp_str, count);
+}
+
 // @function: 在str中使用 src_str 替换 dst_str, 此替换不超过count次, 默认-1全部替换, 返回一个新字符串
-static std::string Replace(const std::string& str, const std::string src_str, const std::string dst_str, const size_t count);
+static std::string Replace(const std::string& str, const std::string& src_str, const std::string& dst_str, const int32_t count=-1){
+    std::string res = str;
+    if (src_str == dst_str || dst_str.empty())
+        return res;
+
+    std::string::size_type _pos = 0;
+    size_t _max_split = (count == -1) ? str.size() : static_cast<size_t>(count);
+    while ((_pos = res.find(dst_str, _pos)) != std::string::npos
+                && _max_split > 0) {
+        res.replace(_pos, dst_str.length(), src_str);
+        _pos += src_str.length();  // 跳过新字符串长度
+        _max_split--;
+    }
+    if(res.empty()){
+        res = str;
+    }
+    return res;
+}
+
+static std::string Replace(const std::string& str, const char src_char, const std::string& dst_str, const int32_t count=-1){
+    return Replace(str, std::string(1, src_char), dst_str, count);
+}
+
+static std::string Replace(const std::string& str, const std::string& src_str, const char dst_char, const int32_t count=-1){
+    return Replace(str, src_str, std::string(1, dst_char), count);
+}
+
+static std::string Replace(const std::string& str, const char src_char, const char dst_char, const int32_t count=-1){
+    return Replace(str, std::string(1, src_char), std::string(1, dst_char), count);
+}
 
 // @function: 在str中使用 src_str 替换 dst_str, 此替换不超过count次, 默认-1全部替换, 直接在原字符串上操作
-static void Replace(std::string& str, const std::string src_str, const std::string dst_str);
+static void Replace(std::string& str, const std::string src_str, const std::string dst_str, const size_t count=-1);
