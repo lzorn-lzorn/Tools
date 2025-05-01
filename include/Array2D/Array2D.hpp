@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include <array>
 #include <optional>
 #include <vector>
@@ -57,9 +58,15 @@ public:
     * @param: num 删除后 num 个元素, 
     *   - num <= 0 时, 则不会删除; 
     *   - 当 num 大于当前矩阵中持有的 val 个数时(除前reserve), 则全部删除;
+    * @return: 该函数只保证执行之后二维数组中不存在 val, 不做任何返回
     * @note: 该算法的(x, y)指定的位置最优先, 即无论(x, y)之前有没有val, 该算法都会无视
     * @note：即从(x, y)之后才开始执行Remove
     */  
+    void Remove(const _Ty& val, 
+                const size_t x=0, const size_t y=0,
+                const size_t reserve=0, 
+                const size_t num=1){}
+
     void Remove(const _Ty val, 
                 const size_t x=0, const size_t y=0,
                 const size_t reserve=0, 
@@ -68,6 +75,18 @@ public:
     void Insert(_Ty val) {
         this->Append(val);
     }
+ 
+    bool Find(const _Ty& val, const size_t& x, const size_t& y) noexcept {}
+
+    /*
+    * @function: 查找第一个符合谓词 Pred 的元素
+    * @param: (x, y) 是算法最后返回的位置;
+    * @param: condition 是一个谓词, 要求最后返回一个bool表示是否满足条件
+    * @param: args... 是额外 condition 需要的参数包
+    * @return: 如果找到结果返回 true, 否则返回 false
+    */
+    template <typename Pred = std::function<bool(_Ty, ...)>, typename ...Args>
+    bool FindIf(const size_t&x, const size_t& y, Pred condition, Args&... args) {}
 
 private:
     std::array<std::optional<value_type>, size> _p_arr;
