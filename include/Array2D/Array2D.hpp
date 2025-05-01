@@ -30,8 +30,8 @@ public:
         }
     }
 
-    const std::vector<_Ty> operator[](const size_t i) const {}
-    std::vector<_Ty> operator[](const size_t i) {}
+    const std::vector<_Ty> operator[](const size_t i) const noexcept {}
+    std::vector<_Ty> operator[](const size_t i) noexcept {}
 
     const _Ty at(const size_t i, const size_t j) const {}
     _Ty at(const size_t i, const size_t j) {}
@@ -45,12 +45,29 @@ public:
         }
         _p_arr.push_back(std::optional<_Ty>(value));
     }
-    void RemovePositionOf(const size_t x, const size_t y) {
+    // @function: 将 (x, y) 处的元素设置为空
+    void RemovePositionAt(const size_t x, const size_t y) {
         _p_arr[_p_translate_to_index(x, y)] = std::nullopt;
     }
-    void RemoveValueOf(const _Ty val, const size_t num=1){}
+    /*
+    * @function: 从 (x, y) 处开始, 保留前 reserve 个元素, 删除后 num 个元素
+    * @param: val, 待删除的值
+    * @param: (x, y) 从哪个位置开始
+    * @param: reserve 保留前n个元素, reserve <= 0 时, 则不会保留
+    * @param: num 删除后 num 个元素, 
+    *   - num <= 0 时, 则不会删除; 
+    *   - 当 num 大于当前矩阵中持有的 val 个数时(除前reserve), 则全部删除;
+    * @note: 该算法的(x, y)指定的位置最优先, 即无论(x, y)之前有没有val, 该算法都会无视
+    * @note：即从(x, y)之后才开始执行Remove
+    */  
+    void Remove(const _Ty val, 
+                const size_t x=0, const size_t y=0,
+                const size_t reserve=0, 
+                const size_t num=1){}
     void Insert(const size_t x, const size_t y, _Ty val) {}
-    void Insert(_Ty val) {}
+    void Insert(_Ty val) {
+        this->Append(val);
+    }
 
 private:
     std::array<std::optional<value_type>, size> _p_arr;
@@ -59,14 +76,14 @@ private:
     };
 
 private:
-    coordinate _p_translate_to_coordinate(const int64_t index){
+    coordinate _p_index_to_xy(const int64_t index){
         coordinate _tmp_coordinate;
         _tmp_coordinate.x = index % N;
         _tmp_coordinate.y = index / N;
         return _tmp_coordinate;
     }
     // N * (y-1) + x 但是x, y是从零开始数的
-    const int64_t _p_translate_to_index(const int32_t x, const int32_t y){
+    const int64_t _p_xy_to_index(const int32_t x, const int32_t y){
         return N * y + x;
     }
 };
