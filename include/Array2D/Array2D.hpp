@@ -31,11 +31,8 @@ public:
         }
     }
 
-    const std::vector<_Ty> operator[](const size_t i) const noexcept {}
-    std::vector<_Ty> operator[](const size_t i) noexcept {}
-
-    const _Ty at(const size_t i, const size_t j) const {}
-    _Ty at(const size_t i, const size_t j) {}
+  const _Ty at(const size_t i, const size_t j) const {}
+    _Ty at(const size_t i, const size_t j) {} 
 
     const std::vector<_Ty> find(const _Ty val) const {}
     const uint64_t find_first_of(const _Ty val) const {}
