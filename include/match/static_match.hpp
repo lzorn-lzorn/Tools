@@ -73,7 +73,7 @@ namespace detail {
 /* usage
 std::variant<int, double, std::string> v = 3.14;
 
-    match::static_match_ext(v,
+    match::static_match(v,
         [](int i)       { std::cout << "int: " << i << "\n"; },
         [](double d)    { std::cout << "double: " << d << "\n"; },
         [](const std::string& s) { std::cout << "string: " << s << "\n"; },
@@ -82,13 +82,13 @@ std::variant<int, double, std::string> v = 3.14;
 */
 template<typename Variant, typename... Visitors>
 requires detail::matchable<Variant, overloaded<Visitors...>>
-auto static_match_ext(const Variant& value, Visitors&&... visitors) {
+auto static_match(const Variant& value, Visitors&&... visitors) {
     return std::visit(overloaded{std::forward<Visitors>(visitors)...}, value);
 }
 
 template<typename Variant, typename... Visitors>
 requires (!detail::matchable<Variant, overloaded<Visitors...>>)
-auto static_match_ext(const Variant&) {
+auto static_match(const Variant&) {
     static_assert(detail::has_fallback_for_variant<Variant, Visitors...>::value,
         "No matching visitor found for all types in the variant. Consider adding a catch-all lambda: [](auto&&) {...}");
     return; // unreachable
