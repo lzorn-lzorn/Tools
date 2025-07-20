@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "../include/match/static_match.hpp"
-#include "../include/match/match.hpp"
+#include "../include/RBTree/RBTree.hpp"
 void test_static_match(){
 
 // 测试1: 基本类型匹配
@@ -92,32 +92,14 @@ void test_static_match(){
     
 }
 
-void test_match(){
-    int x = 42;
-
-    auto matcher = Tools::Match<int>(x)
-        .case_(1, [](int v) { return std::string("one: ") + std::to_string(v); })
-        .case_when([](int v) { return v > 10 && v < 50; }, [](int v) { return v * 2.5; })
-        .case_(42, [](int) { return std::vector<int>{4, 2, 1}; })
-        .default_([](int v) { return "default: " + std::to_string(v); });
-
-    auto result = matcher.run();
-
-    std::visit([](auto&& val) {
-        using V = std::decay_t<decltype(val)>;
-        if constexpr (std::is_same_v<V, std::vector<int>>) {
-            std::cout << "Vector: ";
-            for (auto i : val) std::cout << i << ' ';
-        }
-        else {
-            std::cout << val;
-        }
-        std::cout << '\n';
-    }, result);
+void test_RBTree(){
+    int a = 10;
+    auto* node = RB::CreateRBNode(a);
+    std::cout << node->val << std::endl;
+    RB::DestoryRBNode(node);
 }
 
-
 int main() {
-    test_match();
+    test_RBTree();
     return 0;
 }

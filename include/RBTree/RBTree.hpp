@@ -1,0 +1,208 @@
+#pragma once 
+/*
+ *  红黑树的规则:
+ *  1. 所有节点不是红的就是黑的
+ *  2. 根结点是黑的
+ *  3. 红节点的孩子一定是黑的
+ *  4. 所有路径上黑色节点的数量一样多
+ *  5. 所有叶子节点都是黑的 (NIL)
+ */
+
+#include <memory>
+#include <type_traits>
+#include <utility>
+enum class Color {
+    Red = 0, Black = 1
+};
+
+constexpr bool operator!(Color c) noexcept{
+    return c == Color::Red;    
+}
+
+
+template <typename Ty>
+struct RBNode {
+    using value_type = Ty;
+    using node_type = RBNode<Ty>;
+    Ty val;
+    Color color;
+    node_type * parent;
+    node_type * left;
+    node_type * right;
+
+    explicit RBNode()
+        : val(Ty{}), parent(nullptr), left(nullptr), right(nullptr), color(Color::Black) {}
+
+    explicit RBNode (Ty val, node_type *parent=nullptr, node_type *left=nullptr, node_type *right=nullptr) 
+        : val(val), parent (parent), left(left), right(right), color(Color::Black){}
+
+    bool operator<(const RBNode& elem) const {
+        return this->val < elem.val;
+    }
+    bool operator==(const RBNode& elem) const {
+        return this->val == elem.val;
+    }
+};
+
+namespace RB {
+    template <typename Ty, class Alloc=std::allocator<RBNode<Ty>>>
+    static RBNode<Ty>* CreateRBNode(
+        Ty&& val,
+        RBNode<Ty>* parent=nullptr,
+        RBNode<Ty>* left=nullptr,
+        RBNode<Ty>* right=nullptr
+    ) {
+        using Node = RBNode<Ty>;
+        using AllocTraits = std::allocator_traits<Alloc>;
+
+        Alloc alloc;
+        RBNode<Ty>* addr = AllocTraits::allocate(alloc, 1);
+        std::construct_at(addr, std::forward<Ty>(val), parent, left, right);
+        return addr;
+    }
+    template <typename Ty, class Alloc = std::allocator<RBNode<Ty>>>
+    static RBNode<Ty>* GetNil() {
+        using Node = RBNode<Ty>;
+        using AllocTraits = std::allocator_traits<Alloc>;
+        // comment: 懒汉单例
+        static Node* nil = [] {
+            Alloc alloc;
+            Node* ptr = AllocTraits::allocate(alloc, 1);
+            std::construct_at(ptr);
+            return ptr;
+        }();
+
+        return nil;
+    }
+    template <typename Ty, class Alloc=std::allocator<Ty>>
+    static RBNode<Ty>* DestoryRBNode(RBNode<Ty>* node) {
+        std::destroy_at(node);
+        return node;
+    }
+
+    template <typename Ty, class Alloc=std::allocator<Ty>>
+    static RBNode<Ty>* DestoryRBTree(RBNode<Ty>* node) {
+        if (node->left) [[likely]] {
+            DestoryRBNode(node->left);
+        }
+        if (node->right) [[likely]] {
+            DestoryRBNode(node->right);
+        }
+        DestoryRBNode(node);
+    }
+
+   /*
+    * 左旋操作：将节点 x 向左旋转，使其右子节点 y 成为新的父节点
+    * 图示（左旋）：
+    *
+    *   Before:
+    *         P                  P
+    *         |                  |
+    *         x                  y
+    *        / \                / \
+    *       A  y     ===>      x   γ
+    *         / \             / \    
+    *        B   γ           A   B
+    */
+    template <typename RBNode>
+    static void LeftRotate(RBNode*& root, RBNode* x) {
+        if (!x || !x->right) [[unlikely]] return;
+
+        RBNode* y = x->right;
+        RBNode* B = y->left;
+
+        // 左旋核心结构变换
+        y->left = x;
+        x->right = B;
+
+        if (B)
+            B->parent = x;
+
+        y->parent = x->parent;
+
+        if (!x->parent) {
+            root = y;
+        } else if (x->parent->left == x) {
+            x->parent->left = y;
+        } else {
+            x->parent->right = y;
+        }
+
+        x->parent = y;
+    }
+
+    /*
+    * 右旋操作：将节点 x 向右旋转，使其左子节点 y 成为新的父节点
+    * 图示（右旋）：
+    *
+    *   Before:             After:
+    *        P                  P
+    *        |                  |
+    *        x                  y
+    *       / \                / \    
+    *      y   γ     ===>     α   x
+    *     / \                    / \
+    *    α   B                  B   γ
+    *
+    */
+    template <typename RBNode>
+    static void RightRotate(RBNode*& root, RBNode* x) {
+        if (!x || !x->left) [[unlikely]] return;
+
+        RBNode* y = x->left;
+        RBNode* B = y->right;
+
+        // 右旋核心结构变换
+        y->right = x;
+        x->left = B;
+
+        if (B)
+            B->parent = x;
+
+        y->parent = x->parent;
+
+        if (!x->parent) {
+            root = y;
+        } else if (x->parent->right == x) {
+            x->parent->right = y;
+        } else {
+            x->parent->left = y;
+        }
+
+        x->parent = y;
+    }
+    template <typename RBNode>
+    static void Fix(RBNode* node);
+}
+
+template <typename RBNode>
+static void Insert(const RBNode* const root, RBNode* node);
+
+// @return true: 删除成功
+// @return false: 删除失败(不存在节点)
+template <typename RBNode>
+static bool Remove(const RBNode* const root, RBNode* node);
+
+// @return nullptr: 没找到
+template <typename RBNode>
+static RBNode* Find(const RBNode* const root, RBNode* node);
+
+template <typename Ty>
+struct RBTree {
+public:
+    using value_type = Ty;
+    using node_type = RBNode<Ty>;
+
+public:
+    RBTree() : head(nullptr) {}
+    RBTree(node_type *head) : head(head) {} 
+
+    void SetRoot(node_type * root) noexcept {
+        if (root == nullptr) [[unlikely]] {
+            return ;
+        }
+        head = root;
+    }
+private:
+    node_type head { nullptr };
+};
