@@ -94,9 +94,9 @@ void test_static_match(){
 
 void test_RBTree(){
     int a = 10;
-    auto* node = RB::CreateRBNode(a);
+    auto* node = RBTree::tools::CreateNode(a);
     std::cout << node->val << std::endl;
-    RB::DestoryRBNode(node);
+    RBTree::tools::DestoryNode(node);
 }
 
 int main() {

@@ -9,8 +9,12 @@
  */
 
 #include <memory>
-#include <type_traits>
+#include <stack>
 #include <utility>
+#include <functional>
+
+namespace RBTree {
+
 enum class Color {
     Red = 0, Black = 1
 };
@@ -21,48 +25,48 @@ constexpr bool operator!(Color c) noexcept{
 
 
 template <typename Ty>
-struct RBNode {
+struct Node {
     using value_type = Ty;
-    using node_type = RBNode<Ty>;
+    using node_type = Node<Ty>;
     Ty val;
     Color color;
     node_type * parent;
     node_type * left;
     node_type * right;
 
-    explicit RBNode()
+    explicit Node()
         : val(Ty{}), parent(nullptr), left(nullptr), right(nullptr), color(Color::Black) {}
 
-    explicit RBNode (Ty val, node_type *parent=nullptr, node_type *left=nullptr, node_type *right=nullptr) 
+    explicit Node (Ty val, node_type *parent=nullptr, node_type *left=nullptr, node_type *right=nullptr) 
         : val(val), parent (parent), left(left), right(right), color(Color::Black){}
 
-    bool operator<(const RBNode& elem) const {
+    bool operator<(const Node& elem) const {
         return this->val < elem.val;
     }
-    bool operator==(const RBNode& elem) const {
+    bool operator==(const Node& elem) const {
         return this->val == elem.val;
     }
 };
 
-namespace RB {
-    template <typename Ty, class Alloc=std::allocator<RBNode<Ty>>>
-    static RBNode<Ty>* CreateRBNode(
+namespace tools {
+    template <typename Ty, class Alloc=std::allocator<Node<Ty>>>
+    static Node<Ty>* CreateNode(
         Ty&& val,
-        RBNode<Ty>* parent=nullptr,
-        RBNode<Ty>* left=nullptr,
-        RBNode<Ty>* right=nullptr
+        Node<Ty>* parent=nullptr,
+        Node<Ty>* left=nullptr,
+        Node<Ty>* right=nullptr
     ) {
-        using Node = RBNode<Ty>;
+        using Node = Node<Ty>;
         using AllocTraits = std::allocator_traits<Alloc>;
 
         Alloc alloc;
-        RBNode<Ty>* addr = AllocTraits::allocate(alloc, 1);
+        Node* addr = AllocTraits::allocate(alloc, 1);
         std::construct_at(addr, std::forward<Ty>(val), parent, left, right);
         return addr;
     }
-    template <typename Ty, class Alloc = std::allocator<RBNode<Ty>>>
-    static RBNode<Ty>* GetNil() {
-        using Node = RBNode<Ty>;
+    template <typename Ty, class Alloc = std::allocator<Node<Ty>>>
+    static Node<Ty>* GetNil() {
+        using Node = Node<Ty>;
         using AllocTraits = std::allocator_traits<Alloc>;
         // comment: 懒汉单例
         static Node* nil = [] {
@@ -75,20 +79,20 @@ namespace RB {
         return nil;
     }
     template <typename Ty, class Alloc=std::allocator<Ty>>
-    static RBNode<Ty>* DestoryRBNode(RBNode<Ty>* node) {
+    static Node<Ty>* DestoryNode(Node<Ty>* node) {
         std::destroy_at(node);
         return node;
     }
 
     template <typename Ty, class Alloc=std::allocator<Ty>>
-    static RBNode<Ty>* DestoryRBTree(RBNode<Ty>* node) {
+    static Node<Ty>* DestoryRBTree(Node<Ty>* node) {
         if (node->left) [[likely]] {
-            DestoryRBNode(node->left);
+            DestoryNode(node->left);
         }
         if (node->right) [[likely]] {
-            DestoryRBNode(node->right);
+            DestoryNode(node->right);
         }
-        DestoryRBNode(node);
+        DestoryNode(node);
     }
 
    /*
@@ -104,12 +108,12 @@ namespace RB {
     *         / \             / \    
     *        B   γ           A   B
     */
-    template <typename RBNode>
-    static void LeftRotate(RBNode*& root, RBNode* x) {
+    template <typename Node>
+    static void LeftRotate(Node*& root, Node* x) {
         if (!x || !x->right) [[unlikely]] return;
 
-        RBNode* y = x->right;
-        RBNode* B = y->left;
+        Node* y = x->right;
+        Node* B = y->left;
 
         // 左旋核心结构变换
         y->left = x;
@@ -145,12 +149,12 @@ namespace RB {
     *    α   B                  B   γ
     *
     */
-    template <typename RBNode>
-    static void RightRotate(RBNode*& root, RBNode* x) {
+    template <typename Node>
+    static void RightRotate(Node*& root, Node* x) {
         if (!x || !x->left) [[unlikely]] return;
 
-        RBNode* y = x->left;
-        RBNode* B = y->right;
+        Node* y = x->left;
+        Node* B = y->right;
 
         // 右旋核心结构变换
         y->right = x;
@@ -171,27 +175,48 @@ namespace RB {
 
         x->parent = y;
     }
-    template <typename RBNode>
-    static void Fix(RBNode* node);
+    template <typename Node>
+    static void Fix(Node* node);
+
+
+template <typename Ty>
+inline static void Traversal(const Node<Ty>* root, std::function<void(Node<Ty>*)> visit){
+    std::stack<Node<Ty>*> stack;
+    Node<Ty> * current = root;
+    while(current || !stack.empty()){
+        while(current){
+            stack.push(current);
+            current = current->left;
+        }
+        
+        current = stack.top();
+        stack.pop();
+
+        visit(current);
+
+        current = current->right;
+    }
 }
 
-template <typename RBNode>
-static void Insert(const RBNode* const root, RBNode* node);
+
+template <typename Ty>
+inline static void Insert(const Node<Ty>* const root, Node<Ty>* node);
 
 // @return true: 删除成功
 // @return false: 删除失败(不存在节点)
-template <typename RBNode>
-static bool Remove(const RBNode* const root, RBNode* node);
+template <typename Ty>
+inline static bool Remove(const Node<Ty>* const root, Node<Ty>* node);
 
 // @return nullptr: 没找到
-template <typename RBNode>
-static RBNode* Find(const RBNode* const root, RBNode* node);
+template <typename Ty>
+inline static Node<Ty>* Find(const Node<Ty>* const root, Node<Ty>* node);
 
+} // namespace tools
 template <typename Ty>
 struct RBTree {
 public:
     using value_type = Ty;
-    using node_type = RBNode<Ty>;
+    using node_type = Node<Ty>;
 
 public:
     RBTree() : head(nullptr) {}
@@ -206,3 +231,4 @@ public:
 private:
     node_type head { nullptr };
 };
+}
