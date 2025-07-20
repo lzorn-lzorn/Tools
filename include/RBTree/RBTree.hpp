@@ -38,7 +38,7 @@ struct Node {
         : val(Ty{}), parent(nullptr), left(nullptr), right(nullptr), color(Color::Black) {}
 
     explicit Node (Ty val, node_type *parent=nullptr, node_type *left=nullptr, node_type *right=nullptr) 
-        : val(val), parent (parent), left(left), right(right), color(Color::Black){}
+        : val(val), parent (parent), left(left), right(right), color(Color::Black) {}
 
     bool operator<(const Node& elem) const {
         return this->val < elem.val;
@@ -175,41 +175,157 @@ namespace tools {
 
         x->parent = y;
     }
-    template <typename Node>
-    static void Fix(Node* node);
 
-
-template <typename Ty>
-inline static void Traversal(const Node<Ty>* root, std::function<void(Node<Ty>*)> visit){
-    std::stack<Node<Ty>*> stack;
-    Node<Ty> * current = root;
-    while(current || !stack.empty()){
-        while(current){
-            stack.push(current);
-            current = current->left;
-        }
-        
-        current = stack.top();
-        stack.pop();
-
-        visit(current);
-
-        current = current->right;
+    template <typename Ty>
+    inline static Node<Ty>* Minimum(Node<Ty>* node) {
+        while (node && node->left)
+            node = node->left;
+        return node;
     }
-}
+    /*
+     * function: 用一棵子树 v 替换另一棵子树 u 在树中的位置
+     * Eg: Transplant(B, D) 把 D 接到 B 的位置，并把 D->parent = A
+     *        A               A
+     *       / \             / \
+     *      B   C    ==>    D   C
+     *     / \             / \
+     *    x   D           x   E
+     *       / \
+     *      E   F
+     *  
+     */
+    template <typename Ty>
+    inline static void Transplant(Node<Ty>*& root, Node<Ty>* u, Node<Ty>* v) {
+        if (!u->parent)
+            root = v; // u 是根节点，替换 root 本身
+        else if (u == u->parent->left)
+            u->parent->left = v; // u 是左孩子，用 v 替换
+        else
+            u->parent->right = v; // u 是右孩子，用 v 替换
+        if (v)
+            v->parent = u->parent; // 设置 v 的新父节点
+    }
 
 
-template <typename Ty>
-inline static void Insert(const Node<Ty>* const root, Node<Ty>* node);
+    template <typename Ty>
+    inline static void Traversal(const Node<Ty>* root, std::function<void(Node<Ty>*)> visit){
+        std::stack<Node<Ty>*> stack;
+        Node<Ty> * current = root;
+        while(current || !stack.empty()){
+            while(current){
+                stack.push(current);
+                current = current->left;
+            }
+            
+            current = stack.top();
+            stack.pop();
 
-// @return true: 删除成功
-// @return false: 删除失败(不存在节点)
-template <typename Ty>
-inline static bool Remove(const Node<Ty>* const root, Node<Ty>* node);
+            visit(current);
 
-// @return nullptr: 没找到
-template <typename Ty>
-inline static Node<Ty>* Find(const Node<Ty>* const root, Node<Ty>* node);
+            current = current->right;
+        }
+    }
+
+
+
+    /* 插入方法的四种情况: 插入 Z 节点
+    * case 1: Z == root
+    * case 2: Z.uncle = red
+    * case 3: Z.uncle = black (triangle)
+    * case 4: Z.uncle = black (line)
+    */
+    template <typename Ty>
+    inline static Node<Ty>* InsertRBTree(Node<Ty>*& root, const Ty&& val){
+        Node<Ty>* node = CreateNode(val);
+        node->color = Color::Red;
+        InsertBinTree(root, node);
+        // Fix: 处理以上四种情况
+    }
+
+    template <typename Ty>
+    inline static Node<Ty>* InsertBinTree(Node<Ty>*& root, Node<Ty>* node){
+        if (!root){
+            root = node;
+            root->color = Color::Black;
+            return node;
+        }
+        // if (node == root){
+        //     node->color = Color::Black;
+        //     return node;
+        // }
+        Node<Ty>* current = root;
+        Node<Ty>* parent = nullptr;
+        while (current) {
+            parent = current;
+            if (node->value < current->value) {
+                current = current->left;
+            } else if (node->value > current->value) {
+                current = current->right;
+            } else {
+                // 重复值，不插入，直接返回已有节点（也可以允许插入）
+                return current;
+            }
+        }
+        node->parent = parent;
+        if (node->value < parent->value) {
+            parent->left = node;
+        } else {
+            parent->right = node;
+        }
+
+        return node;
+    }
+
+    // @return true: 删除成功
+    // @return false: 删除失败(不存在节点)
+    template <typename Ty>
+    inline static Node<Ty>* RemoveRBTree(Node<Ty>*& root, const Ty val){
+        Node<Ty>* target = Find(root, val);
+        if (!target){
+            return nullptr;
+        }
+        RemoveBinTree(root, val);
+        // Fix: 
+    }
+
+    template <typename Ty>
+    inline static bool RemoveBinTree(Node<Ty>*& root, const Ty& val) {
+        Node<Ty>* z = FindBinTree(root, val);
+        if (!z) return false;
+
+        if (!z->left) {
+            Transplant(root, z, z->right);
+        } else if (!z->right) {
+            Transplant(root, z, z->left);
+        } else {
+            Node<Ty>* y = Minimum(z->right); // 找中序后继
+            if (y->parent != z) {
+                Transplant(root, y, y->right);
+                y->right = z->right;
+                if (y->right) y->right->parent = y;
+            }
+            Transplant(root, z, y);
+            y->left = z->left;
+            if (y->left) y->left->parent = y;
+        }
+
+        delete z; // 假设你手动管理节点
+        return true;
+    }
+
+    // @return nullptr: 没找到
+    template <typename Ty>
+    inline static Node<Ty>* Find(const Node<Ty>* const root, const Ty& val){
+        while (root) {
+            if (val < root->value)
+                root = root->left;
+            else if (val > root->value)
+                root = root->right;
+            else
+                return root;
+        }
+        return nullptr;
+    }
 
 } // namespace tools
 template <typename Ty>
