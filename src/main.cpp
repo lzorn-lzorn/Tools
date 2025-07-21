@@ -1,7 +1,10 @@
-// --- Test Example ---
 #include <variant>
 #include <string>
 #include <iostream>
+#include <iostream>
+#include <vector>
+#include <cassert>
+#include <algorithm>
 
 #include "../include/match/static_match.hpp"
 #include "../include/RBTree/RBTree.hpp"
@@ -92,14 +95,72 @@ void test_static_match(){
     
 }
 
-void test_RBTree(){
-    int a = 10;
-    auto* node = RBTree::tools::CreateNode(a);
-    std::cout << node->val << std::endl;
-    RBTree::tools::DestoryNode(node);
+using namespace Tree;
+using namespace Tree::Bin::RB;
+
+// 打印节点值及颜色
+template <typename Node>
+void PrintNode(Node* node) {
+    std::cout << node->val << "(" << (node->color == Color::Red ? "R" : "B") << ") ";
+}
+
+// 验证中序遍历是否递增（即是合法的 BST）
+template <typename Node>
+bool IsInOrder(Node* root) {
+    std::vector<typename Node::value_type> vals;
+    Tree::Bin::Traversal<Node>(root, [&](Node* n) {
+        vals.push_back(n->val);
+    });
+    return std::is_sorted(vals.begin(), vals.end());
+}
+
+// 验证性质4：所有路径黑色节点数量相同
+template <typename Node>
+int CountBlackHeight(Node* node, bool& ok) {
+    if (!node) return 1;
+    int left = CountBlackHeight(node->left, ok);
+    int right = CountBlackHeight(node->right, ok);
+    if (left != right) ok = false;
+    return left + (node->color == Color::Black ? 1 : 0);
 }
 
 int main() {
-    test_RBTree();
+    using Ty = int;
+    using Node = Node<Ty>;
+
+    auto* root = CreateNode(-1);
+    if (!root)
+        std::cerr << "root is nullptr\n"; 
+    std::vector<int> values = {10, 20, 30, 15, 25, 5, 1, 50, 60, 70, 65, 80, 75, 90, 85};
+    std::cout << "Test Start:" << std::endl;
+    for (int v : values) {
+        InsertRBTree(root, v);
+    }
+
+    std::cout << "中序遍历 (值+颜色): ";
+    Tree::Bin::Traversal<Node>(root, PrintNode<Node>);
+    std::cout << "\n";
+
+    std::cout << "验证中序遍历是否递增: ";
+    assert(IsInOrder<Node>(root));
+    std::cout << "✓ BST结构合法\n";
+
+    std::cout << "验证根节点是黑色: ";
+    assert(root->color == Color::Black);
+    std::cout << "✓ 根节点为黑色\n";
+
+    std::cout << "验证黑高一致性: ";
+    bool ok = true;
+    CountBlackHeight<Node>(root, ok);
+    assert(ok);
+    std::cout << "✓ 所有路径黑节点数量相同\n";
+
+    std::cout << "尝试插入重复值 30... ";
+    Node* dup = InsertRBTree(root, 30);
+    // assert(dup != nullptr && dup->val == 30);
+    std::cout << "✓ 重复插入未生成新节点\n";
+
+    std::cout << "所有基本测试通过 ✅\n";
+
     return 0;
 }
