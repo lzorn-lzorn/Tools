@@ -14,8 +14,10 @@
 #include <type_traits>
 #include <concepts>
 #include <functional>
+#include <iostream>
 
-namespace Tree {
+namespace RBTreeTools {
+    
     enum class Position {
         Root = -1, Left = 0, Right = 1
     };
@@ -26,13 +28,15 @@ namespace Tree {
     constexpr bool operator!(Color c) noexcept{
         return c == Color::Red;    
     }
-    template <typename NodePtr, typename Value, typename Compare = std::less<>>
-    concept TreeNode = requires(NodePtr node, const Value& val, Compare comp){
+    template <typename NodePtr, typename Compare = std::less<>>
+    concept TreeNode = requires(NodePtr node, std::remove_pointer_t<NodePtr>::value_type val, Compare comp){
         // 检查成员存在且为指针类型
         { node.parent } -> std::convertible_to<std::add_pointer_t<NodePtr>>;
         { node.left } -> std::convertible_to<std::add_pointer_t<NodePtr>>;
         { node.right } -> std::convertible_to<std::add_pointer_t<NodePtr>>;
         { node.val };
+        { typename std::remove_pointer_t<NodePtr>::value_type };
+        { typename std::remove_pointer_t<NodePtr>::node_type };
         // 确保不是方法而是成员变量
         requires std::is_member_object_pointer_v<decltype(&NodePtr::parent)>;
         requires std::is_member_object_pointer_v<decltype(&NodePtr::left)>;
@@ -45,6 +49,8 @@ namespace Tree {
             { comp(val, node->val) } -> std::convertible_to<bool>;
         };
     };
+
+    
     template <typename NodePtr>
     concept RBTreeNode = requires(NodePtr node){
         // 继承基础树节点约束
@@ -59,10 +65,94 @@ namespace Tree {
         };
     };
 
+    template <RBTreeNode NodeTp,
+                typename Ty, 
+                class Alloc = std::allocator<typename NodeTp::node_type>>
+    inline static NodeTp* Nil() {
+        using NodePtr = NodeTp*;
+        using AllocTraits = std::allocator_traits<Alloc>;
+        // comment: 懒汉单例
+        static NodePtr nil = [] {
+            Alloc alloc;
+            NodePtr ptr = AllocTraits::allocate(alloc, 1);
+            std::construct_at(ptr, Ty{}, nullptr, nullptr, nullptr);
+            return ptr;
+        }();
+
+        return nil;
+    }
+
+
+    template <typename Ty>
+    struct RBNode {
+        using value_type = Ty;
+        using node_type = RBNode<Ty>;
+        Ty val;
+        Color color;
+        node_type * parent;
+        node_type * left;
+        node_type * right;
+
+        explicit RBNode()
+            : val(Ty{}), parent(Nil()), left(Nil()), right(Nil()), color(Color::Black) {}
+
+        explicit RBNode (Ty val, node_type *parent=Nil(), node_type *left=Nil(), node_type *right=Nil()) 
+            : val(val), parent (parent), left(left), right(right), color(Color::Black) {}
+
+        bool operator<(const RBNode& elem) const {
+            return this->val < elem.val;
+        }
+        bool operator==(const RBNode& elem) const {
+            return this->val == elem.val;
+        }
+    };
+
+    template <typename Ty, RBTreeNode NodeTp=RBNode<Ty>>
+    inline static NodeTp* CreateNode(
+        Ty&& val
+    ) {
+        using NodePtr = NodeTp;
+        using Alloc = std::allocator<NodePtr>;
+        using AllocTraits = std::allocator_traits<Alloc>;
+
+        Alloc alloc;
+        NodePtr nil = Nil();
+        NodePtr* addr = AllocTraits::allocate(alloc, 1);
+        std::construct_at(addr, std::forward<Ty>(val), nil, nil, nil);
+        return addr;
+    }
+    // template <typename Ty>
+    // inline static Node<Ty>* CreateNode(Ty&& val) {
+    //     return CreateNode<Node, std::remove_cvref_t<Ty>>(std::forward<Ty>(val));
+    // }
+    template <RBTreeNode NodeTp, 
+                typename Ty, 
+                class Alloc=std::allocator<Ty>>
+    static NodeTp* DestoryNode(NodeTp* node) {
+        std::destroy_at(node);
+        return node;
+    }
+
+    template <RBTreeNode NodeTp, 
+                typename Ty, 
+                class Alloc=std::allocator<typename NodeTp::node_type>>
+    static NodeTp* DestroyRBTree(NodeTp* node) {
+        if (node->left) [[likely]] {
+            DestoryNode(node->left);
+        }
+        if (node->right) [[likely]] {
+            DestoryNode(node->right);
+        }
+        DestoryNode(node);
+    }
+
     // @return nullptr: 没找到
-    template <template <typename> class NodeTp, typename Ty>
-    inline static NodeTp<Ty>* Find(NodeTp<Ty>* root, const Ty& val){
-        NodeTp<Ty>* current = root;
+    template <TreeNode NodeTp, typename Ty=NodeTp::value_type>
+    inline static NodeTp* Find(NodeTp* root, const Ty& val){
+    #ifndef NDEBUG
+        static_assert(std::same_as<typename NodeTp::value_type, Ty>, "Find: 查找类型不一致");
+    #endif
+        NodeTp* current = root;
         
         while (current) {
             if (val < current->val)
@@ -74,16 +164,16 @@ namespace Tree {
         }
         return nullptr;
     }
-    template <template <typename> class NodeTp, typename Ty>
-    inline static bool IsLeft(NodeTp<Ty>* parent, NodeTp<Ty>* child){
+    template <TreeNode NodeTp>
+    inline static bool IsLeft(NodeTp* parent, NodeTp* child){
         if (!parent || !child) [[unlikely]] {
             return false;
         }
         return parent->left == child;
     }
 
-    template <template <typename> class NodeTp, typename Ty>
-    inline static bool IsRight(NodeTp<Ty>* parent, NodeTp<Ty>* child){
+    template <TreeNode NodeTp>
+    inline static bool IsRight(NodeTp* parent, NodeTp* child){
         if (!parent || !child) [[unlikely]] {
             return false;
         }
@@ -101,8 +191,8 @@ namespace Tree {
     *      E   F
     *  
     */
-    template <template <typename> class NodeTp, typename Ty>
-    inline static void Transplant(NodeTp<Ty>*& root, NodeTp<Ty>* u, NodeTp<Ty>* v) {
+    template <TreeNode NodeTp>
+    inline static void Transplant(NodeTp*& root, NodeTp* u, NodeTp* v) {
         if (!u->parent)
             root = v; // u 是根节点，替换 root 本身
         else if (u == u->parent->left)
@@ -111,13 +201,14 @@ namespace Tree {
             u->parent->right = v; // u 是右孩子，用 v 替换
         if (v)
             v->parent = u->parent; // 设置 v 的新父节点
+        u->parent = v->parent;
     }
 
     /*
     * @function: 该接口要求 node != nullptr 
     */
-    template <template <typename> class NodeTp, typename Ty>
-    inline static Position Which(NodeTp<Ty>* node){
+    template <TreeNode NodeTp>
+    inline static Position Which(NodeTp* node){
         if (!node->parent){
             return Position::Root;
         }
@@ -129,8 +220,8 @@ namespace Tree {
         }
     }
 
-    template <template <typename> class NodeTp, typename Ty>
-    inline static NodeTp<Ty>* Uncle(NodeTp<Ty>* node){
+    template <TreeNode NodeTp>
+    inline static NodeTp* Uncle(NodeTp* node){
         if (!node || !node->parent || !node->parent->parent){
             return nullptr;
         }
@@ -142,385 +233,313 @@ namespace Tree {
             return nullptr;
         }
     }
-    namespace Bin {
-        template <template <typename> class NodeTp, typename Ty>
-        inline static NodeTp<Ty>* Minimum(NodeTp<Ty>* node) {
-            while (node && node->left)
-                node = node->left;
+
+    template <TreeNode NodeTp>
+    inline static NodeTp* Minimum(NodeTp* node) {
+        while (node && node->left)
+            node = node->left;
+        return node;
+    }
+
+    template <TreeNode NodeTp, typename Ty=NodeTp::value_type>
+    inline static NodeTp* RemoveBinTree(NodeTp*& root, const Ty& val) {
+        NodeTp* z = Find(root, val);
+        if (!z) return false;
+
+        if (!z->left) {
+            Transplant(root, z, z->right);
+        } else if (!z->right) {
+            Transplant(root, z, z->left);
+        } else {
+            NodeTp* y = Minimum(z->right); // 找中序后继
+            if (y->parent != z) {
+                Transplant(root, y, y->right);
+                y->right = z->right;
+                if (y->right) y->right->parent = y;
+            }
+            Transplant(root, z, y);
+            y->left = z->left;
+            if (y->left) y->left->parent = y;
+        }
+
+        return z;
+    }
+
+    template <typename NodeTp>
+    inline static NodeTp* InsertBinTree(NodeTp*& root, NodeTp* node){
+        using NodePtr = NodeTp*;
+        if (!root){
+            root = node;
             return node;
         }
-
-        template <template <typename> class NodeTp, typename Ty>
-        inline static NodeTp<Ty>* RemoveBinTree(NodeTp<Ty>*& root, const Ty& val) {
-            NodeTp<Ty>* z = Find(root, val);
-            if (!z) return false;
-
-            if (!z->left) {
-                Transplant(root, z, z->right);
-            } else if (!z->right) {
-                Transplant(root, z, z->left);
-            } else {
-                NodeTp<Ty>* y = Minimum(z->right); // 找中序后继
-                if (y->parent != z) {
-                    Transplant(root, y, y->right);
-                    y->right = z->right;
-                    if (y->right) y->right->parent = y;
-                }
-                Transplant(root, z, y);
-                y->left = z->left;
-                if (y->left) y->left->parent = y;
-            }
-
-            return z;
-        }
-
-        template <class NodePtr>
-        inline static NodePtr 
-        InsertBinTree(NodePtr& root, NodePtr node){
-            if (!root){
-                root = node;
-                return node;
-            }
-            // if (node == root){
-            //     node->color = Color::Black;
-            //     return node;
-            // }
-            NodePtr current = root;
-            NodePtr parent = nullptr;
-            while (current) {
-                parent = current;
-                if (node->val < current->val) {
-                    current = current->left;
-                } else if (node->val > current->val) {
-                    current = current->right;
-                } else {
-                    // 重复值，不插入，直接返回已有节点（也可以允许插入）
-                    return current;
-                }
-            }
-            node->parent = parent;
-            if (!parent)
-                std::cerr << "parent is nullptr\n";
-            if (!node)
-                std::cerr << "node is nullptr\n";
-            if (node->val < parent->val) {
-                parent->left = node;
-            } else {
-                parent->right = node;
-            }
-
-            return node;
-        }
-        template <typename Node>
-        inline static void Traversal(Node* root, std::function<void(Node*)> visit){
-            std::stack<Node*> stack;
-            Node* current = root;
-            while(current || !stack.empty()){
-                while(current){
-                    stack.push(current);
-                    current = current->left;
-                }
-                
-                current = stack.top();
-                stack.pop();
-
-                visit(current);
-
+        // if (node == root){
+        //     node->color = Color::Black;
+        //     return node;
+        // }
+        NodePtr nil  = Nil();
+        NodePtr current = root;
+        NodePtr parent = nullptr;
+        while (current != nil) {
+            parent = current;
+            if (node->val < current->val) {
+                current = current->left;
+            } else if (node->val > current->val) {
                 current = current->right;
+            } else {
+                // 重复值，不插入，直接返回已有节点（也可以允许插入）
+                return current;
             }
         }
-
-        template <template <typename> class NodeTp, typename Ty>
-        inline static void Traversal(const NodeTp<Ty>* root, std::function<void(NodeTp<Ty>*)> visit){
-            std::stack<NodeTp<Ty>*> stack;
-            NodeTp<Ty> * current = root;
-            while(current || !stack.empty()){
-                while(current){
-                    stack.push(current);
-                    current = current->left;
-                }
-                
-                current = stack.top();
-                stack.pop();
-
-                visit(current);
-
-                current = current->right;
-            }
+        node->parent = parent;
+        if (!parent)
+            std::cerr << "parent is nullptr\n";
+        if (!node)
+            std::cerr << "node is nullptr\n";
+        if (node->val < parent->val) {
+            parent->left = node;
+        } else {
+            parent->right = node;
         }
 
-        
-        namespace RB {
-            template <typename Ty>
-            struct Node {
-                using value_type = Ty;
-                using node_type = Node<Ty>;
-                Ty val;
-                Color color;
-                node_type * parent;
-                node_type * left;
-                node_type * right;
-
-                explicit Node()
-                    : val(Ty{}), parent(nullptr), left(nullptr), right(nullptr), color(Color::Black) {}
-
-                explicit Node (Ty val, node_type *parent=nullptr, node_type *left=nullptr, node_type *right=nullptr) 
-                    : val(val), parent (parent), left(left), right(right), color(Color::Black) {}
-
-                bool operator<(const Node& elem) const {
-                    return this->val < elem.val;
-                }
-                bool operator==(const Node& elem) const {
-                    return this->val == elem.val;
-                }
-            };
-
-            template <template <typename> class NodeTp, typename Ty>
-            inline static NodeTp<Ty>* CreateNode(
-                Ty&& val,
-                NodeTp<Ty>* parent = nullptr,
-                NodeTp<Ty>* left = nullptr,
-                NodeTp<Ty>* right = nullptr
-            ) {
-                using NodeT = NodeTp<Ty>;
-                using Alloc = std::allocator<NodeT>;
-                using AllocTraits = std::allocator_traits<Alloc>;
-
-                Alloc alloc;
-                NodeT* addr = AllocTraits::allocate(alloc, 1);
-                std::construct_at(addr, std::forward<Ty>(val), parent, left, right);
-                return addr;
+        return node;
+    }
+    template <TreeNode NodeTp>
+    inline static void Traversal(NodeTp* root, std::function<void(NodeTp*)> visit){
+        using NodePtr = NodeTp*;
+        std::stack<NodePtr> stack;
+        NodePtr current = root;
+        while(current || !stack.empty()){
+            while(current){
+                stack.push(current);
+                current = current->left;
             }
-            template <typename Ty>
-            inline static Node<Ty>* CreateNode(Ty&& val) {
-                return CreateNode<Node, std::remove_cvref_t<Ty>>(std::forward<Ty>(val));
-            }
-            template <typename Ty, class Alloc = std::allocator<Node<Ty>>>
-            static Node<Ty>* GetNil() {
-                using Node = Node<Ty>;
-                using AllocTraits = std::allocator_traits<Alloc>;
-                // comment: 懒汉单例
-                static Node* nil = [] {
-                    Alloc alloc;
-                    Node* ptr = AllocTraits::allocate(alloc, 1);
-                    std::construct_at(ptr);
-                    return ptr;
-                }();
-
-                return nil;
-            }
-            template <template <typename> class NodeTp, 
-                        typename Ty, 
-                        class Alloc=std::allocator<Ty>>
-            static NodeTp<Ty>* DestoryNode(NodeTp<Ty>* node) {
-                std::destroy_at(node);
-                return node;
-            }
-
-            template <template <typename> class NodeTp, 
-                        typename Ty, 
-                        class Alloc=std::allocator<Ty>>
-            static NodeTp<Ty>* DestroyRBTree(NodeTp<Ty>* node) {
-                if (node->left) [[likely]] {
-                    DestoryNode(node->left);
-                }
-                if (node->right) [[likely]] {
-                    DestoryNode(node->right);
-                }
-                DestoryNode(node);
-            }
-
-           /*
-            * 左旋操作：将节点 x 向左旋转，使其右子节点 y 成为新的父节点
-            * 图示（左旋）：
-            *
-            *   Before:
-            *         P                  P
-            *         |                  |
-            *         x                  y
-            *        / \                / \
-            *       A  y     ===>      x   γ
-            *         / \             / \    
-            *        B   γ           A   B
-            */
-            template <typename Node>
-            static void LeftRotate(Node*& root, Node* x) {
-                if (!x || !x->right) [[unlikely]] return;
-
-                Node* y = x->right;
-                Node* B = y->left;
-
-                // 左旋核心结构变换
-                y->left = x;
-                x->right = B;
-
-                if (B)
-                    B->parent = x;
-
-                y->parent = x->parent;
-
-                if (!x->parent) {
-                    root = y;
-                } else if (x->parent->left == x) {
-                    x->parent->left = y;
-                } else {
-                    x->parent->right = y;
-                }
-
-                x->parent = y;
-            }
-
-            /*
-            * 右旋操作：将节点 x 向右旋转，使其左子节点 y 成为新的父节点
-            * 图示（右旋）：
-            *
-            *   Before:             After:
-            *        P                  P
-            *        |                  |
-            *        x                  y
-            *       / \                / \    
-            *      y   γ     ===>     α   x
-            *     / \                    / \
-            *    α   B                  B   γ
-            *
-            */
-            template <typename Node>
-            static void RightRotate(Node*& root, Node* x) {
-                if (!x || !x->left) [[unlikely]] return;
-
-                Node* y = x->left;
-                Node* B = y->right;
-
-                // 右旋核心结构变换
-                y->right = x;
-                x->left = B;
-
-                if (B)
-                    B->parent = x;
-
-                y->parent = x->parent;
-
-                if (!x->parent) {
-                    root = y;
-                } else if (x->parent->right == x) {
-                    x->parent->right = y;
-                } else {
-                    x->parent->left = y;
-                }
-
-                x->parent = y;
-            }
-
-            /*
-             *       B           B   
-             *     /  \        /  \  
-             *    C    A  or  A   C  => true
-             *        /       \ 
-             *      Z          Z    
-            */
-            template <typename Ty>
-            inline static bool IsTriangle(Node<Ty>* Z, Node<Ty>* A, Node<Ty>* B){
-                if (!Z || !A || !B || A == B || A == Z || Z == B){
-                    return false;
-                }
-                return (IsLeft(A, Z) && IsRight(B, A)) || IsRight(A, Z) && IsLeft(B, A);
-            }
-
-            /*
-             *       B           B   
-             *     /  \        /  \  
-             *    C    A  or  A   C  => true
-             *         \     /     
-             *         Z    Z    
-            */
-            template <typename Ty>
-            inline static bool IsLine(Node<Ty>* Z, Node<Ty>* A, Node<Ty>* B){
-                if (!Z || !A || !B || A == B || A == Z || Z == B){
-                    return false;
-                }
-                return (IsRight(A, Z) && IsRight(B, A)) || (IsLeft(A, Z) && IsLeft(B, A));
-            }
-
             
-            /* 插入方法的四种情况: 插入 Z 节点
-            * case 1: Z == root
-            * case 2: Z.uncle = red
-            * case 3: Z.uncle = black (triangle)
-            * case 4: Z.uncle = black (line)
-            */
-            template <template <typename> class NodeTp, typename Ty>
-            inline static NodeTp<std::remove_cvref_t<Ty>>* 
-            InsertRBTree(NodeTp<std::remove_cvref_t<Ty>>*& root, Ty&& val){
-                using raw_ty = std::remove_cvref_t<Ty>;
-                NodeTp<raw_ty>* node = CreateNode(std::forward<raw_ty>(val)); // 完美转发
-                node->color = Color::Red;
+            current = stack.top();
+            stack.pop();
 
-                NodeTp<raw_ty>*& raw_root = reinterpret_cast<NodeTp<raw_ty>*&>(root);  // 强制统一类型
-                NodeTp<raw_ty>* res = InsertBinTree(root, node);
- 
-                while (res != root && res->parent->color == Color::Red) {
-                    if (Which(res->parent) == Position::Left) {
-                        NodeTp<raw_ty>* uncle = res->parent->parent->right;
-                        if (uncle && uncle->color == Color::Red) {
-                            // Case 1: uncle is red
-                            res->parent->color = Color::Black;
-                            uncle->color = Color::Black;
-                            res->parent->parent->color = Color::Red;
-                            res = res->parent->parent;
-                        } else {
-                            if (Which(res) == Position::Right) {
-                                // Case 2: triangle
-                                res = res->parent;
-                                LeftRotate(root, res);
-                            }
-                            // Case 3: line
-                            res->parent->color = Color::Black;
-                            res->parent->parent->color = Color::Red;
-                            RightRotate(root, res->parent->parent);
-                        }
-                    } else {
-                        // Mirror version
-                        NodeTp<raw_ty>* uncle = res->parent->parent->left;
-                        if (uncle && uncle->color == Color::Red) {
-                            res->parent->color = Color::Black;
-                            uncle->color = Color::Black;
-                            res->parent->parent->color = Color::Red;
-                            res = res->parent->parent;
-                        } else {
-                            if (Which(res) == Position::Left) {
-                                res = res->parent;
-                                RightRotate(root, res);
-                            }
-                            res->parent->color = Color::Black;
-                            res->parent->parent->color = Color::Red;
-                            LeftRotate(root, res->parent->parent);
-                        }
-                    }
-                }
-                root->color = Color::Black;
-                return res;
+            visit(current);
+
+            current = current->right;
+        }
+    }
+
+    template <TreeNode NodeTp, typename Ty>
+    inline static void Traversal(const NodeTp* root, std::function<void(NodeTp*)> visit){
+        std::stack<NodeTp*> stack;
+        NodeTp* current = root;
+        while(current || !stack.empty()){
+            while(current){
+                stack.push(current);
+                current = current->left;
             }
+            
+            current = stack.top();
+            stack.pop();
 
-            // @return true: 删除成功
-            // @return false: 删除失败(不存在节点)
-            template <typename Ty>
-            inline static Node<Ty>* RemoveRBTree(Node<Ty>*& root, const Ty val){
-                Node<Ty>* target = Find(root, val);
-                if (!target){
-                    return nullptr;
+            visit(current);
+
+            current = current->right;
+        }
+    }
+
+    /*
+    * 左旋操作：将节点 x 向左旋转，使其右子节点 y 成为新的父节点
+    * 图示（左旋）：
+    *
+    *   Before:
+    *         P                  P
+    *         |                  |
+    *         x                  y
+    *        / \                / \
+    *       A  y     ===>      x   γ
+    *         / \             / \    
+    *        B   γ           A   B
+    */
+    template <RBTreeNode NodeTp>
+    static void LeftRotate(NodeTp*& root, NodeTp* x) {
+        if (!x || !x->right) [[unlikely]] return;
+
+        NodeTp* y = x->right;
+        NodeTp* B = y->left;
+
+        // 左旋核心结构变换
+        y->left = x;
+        x->right = B;
+
+        if (B)
+            B->parent = x;
+
+        y->parent = x->parent;
+
+        if (!x->parent) {
+            root = y;
+        } else if (x->parent->left == x) {
+            x->parent->left = y;
+        } else {
+            x->parent->right = y;
+        }
+
+        x->parent = y;
+    }
+
+    /*
+    * 右旋操作：将节点 x 向右旋转，使其左子节点 y 成为新的父节点
+    * 图示（右旋）：
+    *
+    *   Before:             After:
+    *        P                  P
+    *        |                  |
+    *        x                  y
+    *       / \                / \    
+    *      y   γ     ===>     α   x
+    *     / \                    / \
+    *    α   B                  B   γ
+    *
+    */
+    template <RBTreeNode NodeTp>
+    static void RightRotate(NodeTp*& root, NodeTp* x) {
+        if (!x || !x->left) [[unlikely]] return;
+
+        NodeTp* y = x->left;
+        NodeTp* B = y->right;
+
+        // 右旋核心结构变换
+        y->right = x;
+        x->left = B;
+
+        if (B)
+            B->parent = x;
+
+        y->parent = x->parent;
+
+        if (!x->parent) {
+            root = y;
+        } else if (x->parent->right == x) {
+            x->parent->right = y;
+        } else {
+            x->parent->left = y;
+        }
+
+        x->parent = y;
+    }
+
+    /*
+        *       B           B   
+        *     /  \        /  \  
+        *    C    A  or  A   C  => true
+        *        /       \ 
+        *      Z          Z    
+    */
+    template <RBTreeNode NodeTp>
+    inline static bool IsTriangle(NodeTp* Z, NodeTp* A, NodeTp* B){
+        if (!Z || !A || !B || A == B || A == Z || Z == B){
+            return false;
+        }
+        return (IsLeft(A, Z) && IsRight(B, A)) || IsRight(A, Z) && IsLeft(B, A);
+    }
+
+    /*
+        *       B           B   
+        *     /  \        /  \  
+        *    C    A  or  A   C  => true
+        *         \     /     
+        *         Z    Z    
+    */
+    template <RBTreeNode NodeTp>
+    inline static bool IsLine(NodeTp* Z, NodeTp* A, NodeTp* B){
+        if (!Z || !A || !B || A == B || A == Z || Z == B){
+            return false;
+        }
+        return (IsRight(A, Z) && IsRight(B, A)) || (IsLeft(A, Z) && IsLeft(B, A));
+    }
+
+    
+    /* 插入方法的四种情况: 插入 Z 节点
+    * case 1: Z == root
+    * case 2: Z.uncle = red
+    * case 3: Z.uncle = black (triangle)
+    * case 4: Z.uncle = black (line)
+    */ 
+    template <RBTreeNode NodeTp, typename Ty=NodeTp::value_type>
+    inline static NodeTp* InsertRBTree(NodeTp*& root, Ty&& val){
+    #ifndef NDEBUG
+        static_assert(std::same_as<typename NodeTp::value_type, Ty>, 
+            "InsertRBTree: Insert Type must be consistent with value_type of RBNode");
+    #endif
+
+        using NodePtr = NodeTp*;
+        NodePtr node = CreateNode(std::forward<Ty>(val)); // 完美转发
+        node->color = Color::Red;
+
+        NodePtr& raw_root = reinterpret_cast<NodePtr&>(root);  // 强制统一类型
+        NodePtr res = InsertBinTree(root, node);
+
+        while (res != root && res->parent->color == Color::Red) {
+            if (Which(res->parent) == Position::Left) {
+                NodePtr uncle = res->parent->parent->right;
+                if (uncle && uncle->color == Color::Red) {
+                    // Case 1: uncle is red
+                    res->parent->color = Color::Black;
+                    uncle->color = Color::Black;
+                    res->parent->parent->color = Color::Red;
+                    res = res->parent->parent;
+                } else {
+                    if (Which(res) == Position::Right) {
+                        // Case 2: triangle
+                        res = res->parent;
+                        LeftRotate(root, res);
+                    }
+                    // Case 3: line
+                    res->parent->color = Color::Black;
+                    res->parent->parent->color = Color::Red;
+                    RightRotate(root, res->parent->parent);
                 }
-                RemoveBinTree(root, val);
-                // Fix: 
-            }            
+            } else {
+                // Mirror version
+                NodePtr uncle = res->parent->parent->left;
+                if (uncle && uncle->color == Color::Red) {
+                    res->parent->color = Color::Black;
+                    uncle->color = Color::Black;
+                    res->parent->parent->color = Color::Red;
+                    res = res->parent->parent;
+                } else {
+                    if (Which(res) == Position::Left) {
+                        res = res->parent;
+                        RightRotate(root, res);
+                    }
+                    res->parent->color = Color::Black;
+                    res->parent->parent->color = Color::Red;
+                    LeftRotate(root, res->parent->parent);
+                }
+            }
+        }
+        root->color = Color::Black;
+        return res;
+    }
 
-        } // namespace RB
-    } // Bin
- } // namesapce Tree   
+    // @return true: 删除成功
+    // @return false: 删除失败(不存在节点)
+    template <RBTreeNode NodeTp, typename Ty>
+    inline static NodeTp* RemoveRBTree(NodeTp*& root, const Ty val){
+    #ifndef NDEBUG
+        static_assert(std::same_as<typename NodeTp::value_type, Ty>, 
+            "RemoveRBTree: Remove Type must be consistent with value_type of RBNode");
+    #endif
+        NodeTp* target = Find(root, val);
+        if (!target){
+            return nullptr;
+        }
+        RemoveBinTree(root, val);
+        // Fix: 
+    }            
+
+ // Bin
+} // namesapce Tree   
 template <typename Ty>
 struct RBTree {
 public:
     using value_type = Ty;
-    using node_type = Tree::Bin::RB::Node<Ty>;
+    using node_type = RBTreeTools::RBNode<Ty>;
 
 public:
     RBTree() : head(nullptr) {}
@@ -532,6 +551,8 @@ public:
         }
         head = root;
     }
+
+
 private:
     node_type* head { nullptr };
 };

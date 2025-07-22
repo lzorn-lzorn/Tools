@@ -1,3 +1,4 @@
+// --- Test Example ---
 #include <variant>
 #include <string>
 #include <iostream>
@@ -95,8 +96,7 @@ void test_static_match(){
     
 }
 
-using namespace Tree;
-using namespace Tree::Bin::RB;
+using namespace RBTreeTools;
 
 // 打印节点值及颜色
 template <typename Node>
@@ -108,7 +108,7 @@ void PrintNode(Node* node) {
 template <typename Node>
 bool IsInOrder(Node* root) {
     std::vector<typename Node::value_type> vals;
-    Tree::Bin::Traversal<Node>(root, [&](Node* n) {
+    Traversal<Node>(root, [&](Node* n) {
         vals.push_back(n->val);
     });
     return std::is_sorted(vals.begin(), vals.end());
@@ -126,7 +126,7 @@ int CountBlackHeight(Node* node, bool& ok) {
 
 int main() {
     using Ty = int;
-    using Node = Node<Ty>;
+    using Node = RBNode<Ty>;
 
     auto* root = CreateNode(-1);
     if (!root)
@@ -138,7 +138,7 @@ int main() {
     }
 
     std::cout << "中序遍历 (值+颜色): ";
-    Tree::Bin::Traversal<Node>(root, PrintNode<Node>);
+    Traversal<Node>(root, PrintNode<Node>);
     std::cout << "\n";
 
     std::cout << "验证中序遍历是否递增: ";
